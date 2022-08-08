@@ -1,7 +1,12 @@
+import Header from './components/header/Header'
+import './App.scss'
+import Router from './components/router'
+
 function App() {
   return (
     <div className='App'>
-      <h1>React Working</h1>
+      <Header />
+      <Router />
     </div>
   )
 }
