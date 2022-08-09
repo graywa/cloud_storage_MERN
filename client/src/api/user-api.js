@@ -13,6 +13,23 @@ export const userAPI = createApi({
           password
         }
       })
-    })
+    }),
+    login: build.mutation({
+      query: ({email, password}) => ({
+        url: '/login',
+        method: 'POST',
+        body: {
+          email,
+          password
+        }
+      })
+    }),
+    auth: build.query({
+      query: () => ({
+        url: '/auth',
+        method: 'GET',
+        headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
+      })
+    }),
   })
 })
