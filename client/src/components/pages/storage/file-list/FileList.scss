@@ -1,0 +1,29 @@
+.file-list {
+  &__content {
+    & > div:nth-child(2n) {
+      background-color: rgb(245, 245, 245);
+    }
+  }
+
+  &__header {
+    display: grid;
+    grid-template-columns: 1fr 4fr repeat(4, 1fr);
+    gap: 6px;
+    margin: 20px 0 5px;
+    padding: 10px 5px 6px;
+    background-color: rgb(240, 240, 240);
+    border-bottom: 2px solid rgb(173, 173, 173);
+  }
+
+  &__name {
+    grid-column-start: 2;
+  }
+  &__date {
+    grid-column-start: 5;
+    justify-self: center;
+  }
+  &__size {
+    grid-column-start: 6;
+    justify-self: center;
+  }
+}

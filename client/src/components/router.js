@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux'
 import Login from './pages/registration/Login'
 import Registration from './pages/registration/Registration'
-import Storage from './storage/Storage'
+import Storage from './pages/storage/Storage'
 
 const { Routes, Route, Navigate } = require('react-router-dom')
 

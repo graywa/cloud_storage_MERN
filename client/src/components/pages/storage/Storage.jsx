@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fileAPI } from '../../api/file-api'
-import { setFiles } from '../../store/reducers/fileReducer'
+import { fileAPI } from '../../../api/file-api'
+import { setFiles } from '../../../store/reducers/fileReducer'
 import FileList from './file-list/FileList'
 import './Storage.scss'
 
@@ -11,7 +11,6 @@ const Storage = () => {
   const { data, isLoading, error } = fileAPI.useGetFilesQuery({
     dirId: currDir,
   })
-  console.log(data)
 
   useEffect(() => {
     if (data) {      

@@ -1,0 +1,28 @@
+.file {
+  display: grid;
+  grid-template-columns: 1fr 4fr repeat(4, 1fr);
+  align-items: center;
+  gap: 6px;
+  padding: 8px;
+  border-bottom:1px solid rgb(207, 207, 207);
+  cursor: pointer;
+
+  img {
+    justify-self: center;
+  }
+
+  &__name {
+    grid-column-start: 2;
+  }
+
+  &__date {
+    grid-column-start: 5;
+    justify-self: center;
+    font-size: 14px;
+  }
+
+  &__size {
+    grid-column-start: 6;
+    justify-self: center;
+  }
+}
