@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux'
 import Login from './pages/registration/Login'
 import Registration from './pages/registration/Registration'
+import Storage from './storage/Storage'
 
 const { Routes, Route, Navigate } = require('react-router-dom')
 
@@ -18,7 +19,7 @@ const Router = () => {
       )}
       {isAuth && (
         <Routes>
-          <Route path='/' element={<h1>Main page</h1>} />
+          <Route path='/' element={<Storage />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       )}
