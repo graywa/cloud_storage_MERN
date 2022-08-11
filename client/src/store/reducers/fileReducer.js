@@ -4,7 +4,8 @@ const fileSlice = createSlice({
   name: 'files',
   initialState: {
     files: [],
-    currentDir: null
+    currentDir: null,
+    dirStack: [],
   },
   reducers: {
     setFiles(state, {payload: {files}}) {
@@ -16,9 +17,15 @@ const fileSlice = createSlice({
     addDir(state, {payload: {file}}) {
       state.files.push(file)
     },
+    addDirToStack(state, {payload: {dirId}}) {
+      state.dirStack.push(dirId)
+    },
+    delDirFromStack(state) {
+      state.dirStack.pop()
+    }
   }
 })
 
-export const {setCurrDir, setFiles, addDir} = fileSlice.actions
+export const {setCurrDir, setFiles, addDir, addDirToStack, delDirFromStack} = fileSlice.actions
 
 export default fileSlice.reducer

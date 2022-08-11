@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import './Modal.scss'
 import close from './../../../assets/close.png'
+import { useSelector } from 'react-redux'
 
 const Modal = ({ setOpen, createDirHandler }) => {
   const [value, setValue] = useState('')
+  const currDir = useSelector(state => state.files.currentDir)
 
   return (
     <div className='modal' onClick={() => setOpen(false)}>
@@ -20,7 +22,7 @@ const Modal = ({ setOpen, createDirHandler }) => {
           alt='close'
           onClick={() => setOpen(false)}
         />
-        <button className='create' onClick={createDirHandler}>
+        <button className='create' onClick={() => createDirHandler(value, currDir)}>
           Create folder
         </button>
       </div>

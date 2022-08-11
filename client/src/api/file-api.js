@@ -3,13 +3,15 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react'
 export const fileAPI = createApi({
   reducerPath: 'fileAPI',
   baseQuery: fetchBaseQuery({baseUrl: 'http://localhost:5000/api/file/'}),
+  tagTypes: ['File'],
   endpoints: (build) => ({   
     getFiles: build.query({
       query: ({dirId}) => ({
         url: `${dirId ? `?parent=${dirId}` : ''}`,
         method: 'GET',
         headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
-      })
+      }),
+      providesTags: result => ['File']
     }),
     createDir: build.mutation({
       query: ({name, dirId}) => ({
@@ -20,7 +22,8 @@ export const fileAPI = createApi({
           parent: dirId,
           type: 'dir'
         }
-      })
+      }),
+      invalidatesTags: ['File']
     }),
   })
 })

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fileAPI } from '../../../api/file-api'
-import { addDir, setFiles } from '../../../store/reducers/fileReducer'
+import { addDir, delDirFromStack, setCurrDir, setFiles } from '../../../store/reducers/fileReducer'
 import FileList from './file-list/FileList'
 import Modal from './modal/Modal'
 import './Storage.scss'
@@ -9,20 +9,18 @@ import './Storage.scss'
 const Storage = () => {
   const [isOpen, setOpen] = useState(false)
   const dispatch = useDispatch()
-  const currDir = useSelector((state) => state.files.currentDir)
+  const {currentDir, dirStack} = useSelector((state) => state.files)
   const { data, isLoading, error } = fileAPI.useGetFilesQuery({
-    dirId: currDir,
+    dirId: currentDir,
   })
 
-  const [createDir, {}] = fileAPI.useCreateDirMutation()
+  const [createDir, {data: fileData}] = fileAPI.useCreateDirMutation()
 
-  const createDirHandler = async () => {
-    const res = await createDir({
-      name: 'mored3',
-      dirId: currDir,
-    })
-    const { data: file } = res
-    dispatch(addDir({ file }))
+  const createDirHandler = async (name, dirId) => {
+    await createDir({
+      name,
+      dirId,
+    })    
     setOpen(false)
   }
 
@@ -30,12 +28,23 @@ const Storage = () => {
     if (data) {
       dispatch(setFiles({ files: data }))
     }
-  }, [data])
+
+    if (fileData) {      
+      dispatch(addDir({ file: fileData }))
+    }
+  }, [data, fileData])
+
+  
+  const backHandler = () => {    
+    const backDirId = dirStack.at(-1)
+    dispatch(setCurrDir({currDir: backDirId}))
+    dispatch(delDirFromStack())
+  }
 
   return (
     <div className='storage container'>
       <div className='storage__btns'>
-        <button className='back'>Back</button>
+        <button className='back' onClick={() => backHandler()}>Back</button>
         <button className='create' onClick={() => setOpen(true)}>
           Create folder
         </button>
