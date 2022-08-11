@@ -1,3 +1,5 @@
+@import '../../../components/styles/templates';
+
 .storage {
   margin-top: 20px;
 
@@ -6,17 +8,7 @@
     gap: 20px;
 
     button {
-      padding: 5px 15px;
-      border-radius: 5px;
-      background-color: var(--main-color);
-      color: #fff;
-      cursor: pointer;
-      border: none;
-      transition: .2s linear;
-  
-      &:hover {
-        background-color: var(--second-color);
-      }
+      @extend %blueButton
     }
   }
 }

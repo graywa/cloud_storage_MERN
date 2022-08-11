@@ -11,5 +11,16 @@ export const fileAPI = createApi({
         headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
       })
     }),
+    createDir: build.mutation({
+      query: ({name, dirId}) => ({
+        method: 'POST',
+        headers: {Authorization: `Bearer ${localStorage.getItem('token')}`},
+        body: {
+          name,
+          parent: dirId,
+          type: 'dir'
+        }
+      })
+    }),
   })
 })

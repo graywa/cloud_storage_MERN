@@ -10,12 +10,15 @@ const fileSlice = createSlice({
     setFiles(state, {payload: {files}}) {
       state.files = files
     },
-    setCurrDir(state, {currDir}) {
+    setCurrDir(state, {payload: {currDir}}) {
       state.currentDir = currDir
+    },
+    addDir(state, {payload: {file}}) {
+      state.files.push(file)
     },
   }
 })
 
-export const {setCurrDir, setFiles} = fileSlice.actions
+export const {setCurrDir, setFiles, addDir} = fileSlice.actions
 
 export default fileSlice.reducer

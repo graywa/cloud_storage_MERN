@@ -7,7 +7,7 @@ const File = ({ type, name, date, size }) => {
     <div className='file'>
       <img width={26} src={type === 'dir' ? folder : file} alt='icon' />
       <div className='file__name'>{name}</div>
-      <div className='file__date'>{date.slice(0,10)}</div>
+      <div className='file__date'>{date?.slice(0,10)}</div>
       <div className='file__size'>{size}</div>
     </div>
   )

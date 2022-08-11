@@ -19,7 +19,7 @@ function App() {
   }, [data])
 
   return (
-    <div className='App'>
+    <div className='app'>
       <Header />
       <Router />
     </div>

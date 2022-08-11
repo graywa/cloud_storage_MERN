@@ -1,0 +1,48 @@
+@import '../../../../components/styles/templates';
+
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 11;
+  background-color: rgba(0, 0, 0, 0.479); 
+  
+
+  .content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 400px;
+    width: 100%;
+    padding: 50px 30px;
+    background-color: #fff;
+    box-shadow: 5px 1px 10px 4px rgb(41 41 41 / 41%); 
+
+    img {
+      position: absolute;
+      top: -14px;
+      right: -14px;
+      transition: .2s linear;
+      cursor: pointer;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+
+    input {
+      padding: 10px 15px;
+    }
+
+    button {
+      @extend %blueButton;
+      padding: 10px;
+    }
+  }
+}
