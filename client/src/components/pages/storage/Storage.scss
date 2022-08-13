@@ -10,5 +10,13 @@
     button {
       @extend %blueButton
     }
+
+    input {
+      display: none;
+    }
+
+    label {
+      @extend %blueButton
+    }
   }
 }

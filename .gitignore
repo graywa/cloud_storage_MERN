@@ -22,3 +22,4 @@
 /client/yarn.lock
 
 /server/node_modules
+/server/files

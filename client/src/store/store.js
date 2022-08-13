@@ -12,5 +12,5 @@ export default configureStore({
     [fileAPI.reducerPath]: fileAPI.reducer,
   },
   middleware: (getDefaultMiddleware) => 
-    getDefaultMiddleware().concat(userAPI.middleware)  
+    getDefaultMiddleware().concat(fileAPI.middleware, userAPI.middleware)  
 })
