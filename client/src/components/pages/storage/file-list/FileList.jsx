@@ -23,7 +23,7 @@ const FileList = () => {
           return <File key={file._id} {...file} />
         })}
       </div>
-      <p>*drag files to the file list</p>
+      <p>*drag and drop files to the file list</p>
     </div>
   )
 }

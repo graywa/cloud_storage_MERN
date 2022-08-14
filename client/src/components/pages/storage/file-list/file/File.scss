@@ -1,3 +1,5 @@
+@import '../../../../styles/templates';
+
 .file {
   display: grid;
   grid-template-columns: 1fr 4fr repeat(4, 1fr);
@@ -18,12 +20,31 @@
   &__date {
     grid-column-start: 5;
     justify-self: center;
-    font-size: 14px;
-  }
+    font-size: 14px;    
+  }  
 
   &__size {
     grid-column-start: 6;
     justify-self: center;
+    font-size: 14px;    
+  }
+
+  &:hover &__date {
+    grid-column-start: 3;
+  }
+
+  &:hover &__size {
+    grid-column-start: 4;
+  }
+
+  button {
+    @extend %blueButton;
+    display: none;  
+    padding: 5px 10px; 
     font-size: 14px;
+  }
+
+  &:hover button {
+    display: block;
   }
 }

@@ -87,7 +87,7 @@ const Storage = () => {
   return (
     <div className='storage container'>
       <div className='storage__btns'>
-        <button className='back' onClick={() => backHandler()}>
+        <button className='back' onClick={backHandler}>
           Back
         </button>
         <button className='create' onClick={() => setOpen(true)}>

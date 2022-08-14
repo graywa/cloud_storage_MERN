@@ -4,7 +4,8 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, .25);
 
   &__content {  
-    min-height: 500px;
+    height: 600px;
+    overflow-y: auto;
     
     & > div:nth-child(2n) {
       background-color: rgb(245, 245, 245);
