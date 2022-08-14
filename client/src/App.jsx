@@ -5,6 +5,7 @@ import { useEffect } from 'react'
 import { userAPI } from './api/user-api'
 import { useDispatch } from 'react-redux'
 import { setUser } from './store/reducers/userReducer'
+import Footer from './components/pages/footer/Footer'
 
 function App() {
   const dispatch = useDispatch()
@@ -22,6 +23,7 @@ function App() {
     <div className='app'>
       <Header />
       <Router />
+      <Footer />
     </div>
   )
 }

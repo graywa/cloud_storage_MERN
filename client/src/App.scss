@@ -41,6 +41,9 @@ img {
 }
 
 .app {
-  background: linear-gradient(rgb(245, 244, 255), rgb(255, 255, 255)) no-repeat;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   height: 100vh;
+  background: linear-gradient(rgb(245, 244, 255), rgb(255, 255, 255)) no-repeat;
 }

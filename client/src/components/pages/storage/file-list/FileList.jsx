@@ -16,13 +16,14 @@ const FileList = () => {
       <div className='file-list__header'>
         <div className='file-list__name'>Name</div>
         <div className='file-list__date'>Date</div>
-        <div className='file-list__size'>Size</div>
+        <div className='file-list__size'>Size, B</div>
       </div>
       <div className='file-list__content'>
         {data.map((file) => {
           return <File key={file._id} {...file} />
         })}
       </div>
+      <p>*drag files to the file list</p>
     </div>
   )
 }

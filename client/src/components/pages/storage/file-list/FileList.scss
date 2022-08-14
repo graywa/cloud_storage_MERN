@@ -1,6 +1,10 @@
 .file-list {
   background-color: rgb(255, 255, 255);
-  &__content {
+  border: 1px solid rgb(161, 161, 161);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .25);
+
+  &__content {  
+    min-height: 500px;
     
     & > div:nth-child(2n) {
       background-color: rgb(245, 245, 245);
@@ -11,7 +15,7 @@
     display: grid;
     grid-template-columns: 1fr 4fr repeat(4, 1fr);
     gap: 6px;
-    margin: 20px 0 5px;
+    margin: 0 0 5px;
     padding: 10px 5px 6px;
     background-color: rgb(240, 240, 240);
     border-bottom: 2px solid rgb(173, 173, 173);
@@ -27,5 +31,12 @@
   &__size {
     grid-column-start: 6;
     justify-self: center;
+  }
+
+  p {
+    padding: 10px 10px 5px;
+    background-color: rgb(250, 250, 250);
+    color:rgb(95, 95, 95);
+    border-top: 2px solid rgb(90, 90, 90);
   }
 }
