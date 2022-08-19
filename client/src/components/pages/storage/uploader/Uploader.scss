@@ -1,0 +1,71 @@
+.uploader {
+  width: 300px;
+  height: 240px;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 10;
+  padding: 24px;
+  background-color: rgb(243, 243, 236);
+  box-shadow: 4px 3px 8px 1px #46555554;
+
+  &__header {
+    h5 {
+      text-align: center;
+      font-size: 18px;
+      font-weight: 400;
+    }
+    img {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      z-index: 11;
+      transition: 0.2s linear;
+      cursor: pointer;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+  }
+
+  &__files {
+    overflow-y: auto;
+    height: 100%;
+    padding: 0 5px;
+  }
+
+  .upload-file {
+    margin: 5px 0;
+    padding: 5px 0;
+
+    &__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px;
+    }
+
+    &__progress {
+      position: relative;
+      display: flex;
+      height: 18px;
+      background-color: rgb(233, 233, 233);
+      box-shadow:inset 0px -1px 3px rgb(121 121 121 / 85%);
+      margin: 3px 0;
+
+      .progress {       
+
+        &__bar {
+          background-color: rgb(159, 202, 159);
+        }
+
+        &__percent {
+          position: absolute;
+          left: 50%;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+}

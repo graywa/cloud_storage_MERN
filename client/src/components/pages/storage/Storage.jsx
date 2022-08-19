@@ -9,6 +9,7 @@ import FileList from './file-list/FileList'
 import Modal from './modal/Modal'
 import './Storage.scss'
 import upload from '../../assets/upload.png'
+import Uploader from './uploader/Uploader'
 
 const Storage = () => {
   const [isOpen, setOpen] = useState(false)
@@ -132,6 +133,7 @@ const Storage = () => {
       {isOpen && (
         <Modal setOpen={setOpen} createDirHandler={createDirHandler} />
       )}
+      <Uploader />
     </div>
   )
 }
