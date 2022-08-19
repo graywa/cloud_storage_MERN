@@ -16,7 +16,7 @@ const Storage = () => {
   const dispatch = useDispatch()
   const { dirStack, currentDir } = useSelector((state) => state.files)
 
-  const [createDir, { data }] = fileAPI.useCreateDirMutation()
+  const [createDir, { data, error }] = fileAPI.useCreateDirMutation()
 
   const createDirHandler = async (name, dirId) => {
     await createDir({
@@ -83,6 +83,8 @@ const Storage = () => {
 
     setShowDropArea(false)
   }
+
+  if(error) console.log(error.data.message)
 
   return (
     <div className='storage container'>

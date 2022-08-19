@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react'
 
 const baseQuery = {
-  baseUrl: 'http://localhost:5000/api/file',
+  baseUrl: 'http://localhost:5000/api/file/',
   prepareHeaders: (headers) => {
     const token = localStorage.getItem('token')
     if (token) {
@@ -33,6 +33,20 @@ export const fileAPI = createApi({
           type: 'dir',
         },
       }),
+      invalidatesTags: ['File'],
+    }),
+
+    deleteFile: build.mutation({
+      query: ({ id }) => {
+        console.log(id)
+        return {
+          url: '/',
+          method: 'DELETE',
+          params: {
+            id,
+          },
+        }
+      },
       invalidatesTags: ['File'],
     }),
 
@@ -69,7 +83,7 @@ export const fileAPI = createApi({
         params: {
           _id,
         },
-        responseHandler: async (response) => {  
+        responseHandler: async (response) => {
           return window.URL.createObjectURL(await response.blob())
         },
         cache: 'no-cache',

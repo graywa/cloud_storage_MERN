@@ -11,14 +11,14 @@ import { fileAPI } from '../../../../../api/file-api'
 const File = ({ _id, type, name, date, size }) => {
   const dispatch = useDispatch()
   const { currentDir } = useSelector((state) => state.files)
-  const [downloadFile, {}] = fileAPI.useLazyDownloadFileQuery()
+  const [downloadFile, {error: downloadError}] = fileAPI.useLazyDownloadFileQuery()
+  const [deleteFile, {error: deleteError}] = fileAPI.useDeleteFileMutation()
 
   const openDirHandler = () => {
     if (type !== 'dir') return
     dispatch(addDirToStack({ dirId: currentDir }))
     dispatch(setCurrDir({ currDir: _id }))
   }
-
 
   const downloadHandler = async (e) => {
     e.stopPropagation()
@@ -32,6 +32,14 @@ const File = ({ _id, type, name, date, size }) => {
     link.remove()
   }
 
+  const deleteHandler = async (e) => {
+    e.stopPropagation()
+    await deleteFile({id: _id}).unwrap()
+  }
+
+  if(downloadError ) console.log(downloadError.data.message)
+  if(deleteError) console.log(deleteError.data.message)
+
   return (
     <div className='file' onClick={openDirHandler}>
       <img width={26} src={type === 'dir' ? folder : file} alt='icon' />
@@ -43,7 +51,9 @@ const File = ({ _id, type, name, date, size }) => {
           download
         </button>
       )}
-      <button className='delete'>delete</button>
+      <button className='delete' onClick={deleteHandler}>
+        delete
+      </button>
     </div>
   )
 }
