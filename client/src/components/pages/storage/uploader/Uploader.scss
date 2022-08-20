@@ -31,6 +31,7 @@
 
   &__files {
     overflow-y: auto;
+    overflow-x: hidden;
     height: 100%;
     padding: 0 5px;
   }
@@ -44,6 +45,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 5px;
+      font-size: 14px;
     }
 
     &__progress {
@@ -57,12 +59,18 @@
       .progress {       
 
         &__bar {
-          background-color: rgb(159, 202, 159);
+          overflow: hidden;
+        }
+
+        &__bar-in {
+          width: 242px;
+          height: 18px;
+          background: linear-gradient(90deg, rgba(159,202,159,1) 0%, rgb(126, 228, 126) 100%);
         }
 
         &__percent {
           position: absolute;
-          left: 50%;
+          left: 45%;
           font-size: 14px;
         }
       }

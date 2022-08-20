@@ -32,13 +32,13 @@ export const fileAPI = createApi({
           parent: dirId,
           type: 'dir',
         },
+        
       }),
       invalidatesTags: ['File'],
     }),
 
     deleteFile: build.mutation({
       query: ({ id }) => {
-        console.log(id)
         return {
           url: '/',
           method: 'DELETE',
@@ -57,7 +57,7 @@ export const fileAPI = createApi({
           method: 'POST',
           body,
           onUploadProgress: (progressEvent) => {
-            const totalLength = progressEvent.lengthCumputable
+            const totalLength = progressEvent.lengthComputable
               ? progressEvent.total
               : progressEvent.target.getResponseHeader('content-length') ||
                 progressEvent.target.getResponseHeader(

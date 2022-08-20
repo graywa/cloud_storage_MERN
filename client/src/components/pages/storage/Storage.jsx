@@ -10,12 +10,15 @@ import Modal from './modal/Modal'
 import './Storage.scss'
 import upload from '../../assets/upload.png'
 import Uploader from './uploader/Uploader'
+import { uploadAPI } from '../../../api/upload-api'
+import { addFile, showUploader } from '../../../store/reducers/uploadReducer'
 
 const Storage = () => {
   const [isOpen, setOpen] = useState(false)
   const [isShowDropArea, setShowDropArea] = useState(false)
   const dispatch = useDispatch()
   const { dirStack, currentDir } = useSelector((state) => state.files)
+  const { files: uploadFiles } = useSelector((state) => state.uploadFiles)
 
   const [createDir, { data, error }] = fileAPI.useCreateDirMutation()
 
@@ -27,7 +30,8 @@ const Storage = () => {
     setOpen(false)
   }
 
-  const [uploadFile, {}] = fileAPI.useUploadFileMutation()
+  const [uploadFile] = uploadAPI.useUploadFileMutation()
+  const [getFiles] = fileAPI.useLazyGetFilesQuery()
 
   const backHandler = () => {
     const backDirId = dirStack.at(-1)
@@ -36,17 +40,26 @@ const Storage = () => {
     dispatch(delDirFromStack())
   }
 
-  const uploadFileHandler = (e) => {
-    const files = [...e.target.files]
+  const uploadFileHandler = async (files) => {
+    await Promise.all(
+      files.map((file, index) => {
+        const formData = new FormData()
+        formData.append('file', file)
+        if (currentDir) {
+          formData.append('parent', currentDir)
+        }
+        const fileToUpload = {
+          id: uploadFiles.length + index,
+          name: file.name,
+          progress: 0,
+        }
+        dispatch(showUploader())
+        dispatch(addFile({ fileToUpload }))
+        return uploadFile({ formData, dispatch, fileToUpload }).unwrap()
+      })
+    )
 
-    files.forEach((file) => {
-      const formData = new FormData()
-      formData.append('file', file)
-      if (currentDir) {
-        formData.append('parent', currentDir)
-      }
-      uploadFile(formData).unwrap()
-    })
+    getFiles({ dirId: currentDir })
   }
 
   const dragEnterHandler = (e) => {
@@ -54,38 +67,26 @@ const Storage = () => {
     e.stopPropagation()
     setShowDropArea(true)
   }
-
   const dragOverHandler = (e) => {
     e.preventDefault()
     e.stopPropagation()
     setShowDropArea(true)
   }
-
   const dragLeaveHandler = (e) => {
     e.preventDefault()
     e.stopPropagation()
     setShowDropArea(false)
   }
-
-  const dropHandler = (e) => {
+  const dropHandler = async (e) => {
     e.preventDefault()
     e.stopPropagation()
-
     const files = [...e.dataTransfer.files]
-
-    files.forEach((file) => {
-      const formData = new FormData()
-      formData.append('file', file)
-      if (currentDir) {
-        formData.append('parent', currentDir)
-      }
-      uploadFile(formData).unwrap()
-    })
-
     setShowDropArea(false)
+
+    uploadFileHandler(files)
   }
 
-  if(error) console.log(error.data.message)
+  if (error) console.log(error.data.message)
 
   return (
     <div className='storage container'>
@@ -101,7 +102,7 @@ const Storage = () => {
           <input
             type='file'
             id='upload-file'
-            onChange={uploadFileHandler}
+            onChange={(e) => uploadFileHandler([...e.target.files])}
             multiple={true}
           />
         </label>
