@@ -7,6 +7,7 @@ import {
   setCurrDir,
 } from '../../../../../store/reducers/fileReducer'
 import { fileAPI } from '../../../../../api/file-api'
+import { formatSize } from '../../../../../utils/forman-size'
 
 const File = ({ _id, type, name, date, size }) => {
   const dispatch = useDispatch()
@@ -45,7 +46,7 @@ const File = ({ _id, type, name, date, size }) => {
       <img width={26} src={type === 'dir' ? folder : file} alt='icon' />
       <div className='file__name'>{name}</div>
       <div className='file__date'>{date?.slice(0, 10)}</div>
-      <div className='file__size'>{size}</div>
+      <div className='file__size'>{formatSize(size)}</div>
       {type !== 'dir' && (
         <button className='download' onClick={downloadHandler}>
           download

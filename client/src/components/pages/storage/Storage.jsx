@@ -18,7 +18,6 @@ const Storage = () => {
   const [isShowDropArea, setShowDropArea] = useState(false)
   const dispatch = useDispatch()
   const { dirStack, currentDir } = useSelector((state) => state.files)
-  const { files: uploadFiles } = useSelector((state) => state.uploadFiles)
 
   const [createDir, { data, error }] = fileAPI.useCreateDirMutation()
 
@@ -49,7 +48,7 @@ const Storage = () => {
           formData.append('parent', currentDir)
         }
         const fileToUpload = {
-          id: uploadFiles.length + index,
+          id: Date.now(),
           name: file.name,
           progress: 0,
         }
@@ -108,28 +107,31 @@ const Storage = () => {
         </label>
       </div>
 
-      {isShowDropArea ? (
-        <div
-          className='drop-area'
-          onDragEnter={dragEnterHandler}
-          onDragOver={dragOverHandler}
-          onDragLeave={dragLeaveHandler}
-          onDrop={dropHandler}
-        >
-          <p>
-            <img width={50} src={upload} alt='upload' />
-            Drag and drop files here
-          </p>
-        </div>
-      ) : (
-        <div
-          onDragEnter={dragEnterHandler}
-          onDragOver={dragOverHandler}
-          onDragLeave={dragLeaveHandler}
-        >
-          <FileList />
-        </div>
-      )}
+      <div className='storage__content'>
+        {isShowDropArea ? (
+          <div
+            className='drop-area'
+            onDragEnter={dragEnterHandler}
+            onDragOver={dragOverHandler}
+            onDragLeave={dragLeaveHandler}
+            onDrop={dropHandler}
+          >
+            <p>
+              <img width={50} src={upload} alt='upload' />
+              Drag and drop files here
+            </p>
+          </div>
+        ) : (
+          <div
+            className='file-list-wrapper'
+            onDragEnter={dragEnterHandler}
+            onDragOver={dragOverHandler}
+            onDragLeave={dragLeaveHandler}
+          >
+            <FileList />
+          </div>
+        )}
+      </div>
 
       {isOpen && (
         <Modal setOpen={setOpen} createDirHandler={createDirHandler} />

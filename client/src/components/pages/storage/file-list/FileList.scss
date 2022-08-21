@@ -1,13 +1,16 @@
 .file-list {
+  display: flex;
+  flex-direction: column;
   background-color: rgb(255, 255, 255);
   border: 1px solid rgb(161, 161, 161);
   box-shadow: 0 2px 4px rgba(0, 0, 0, .25);
+  height: 100%;
 
-  &__content {  
-    height: 600px;
-    overflow-y: auto;
+  &__content {     
+    overflow-y: auto;  
+    flex: 1;  
     
-    & > div:nth-child(2n) {
+    & .file:nth-child(2n) {
       background-color: rgb(245, 245, 245);
     }
   }
@@ -39,5 +42,20 @@
     background-color: rgb(250, 250, 250);
     color:rgb(95, 95, 95);
     border-top: 2px solid rgb(90, 90, 90);
+  }
+}
+
+.file-anim-enter-active {
+  animation: file-enter 500ms forwards
+}
+
+@keyframes file-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(-50%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

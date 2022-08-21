@@ -46,6 +46,10 @@
       align-items: center;
       padding: 5px;
       font-size: 14px;
+
+      img {
+        cursor: pointer;
+      }
     }
 
     &__progress {
