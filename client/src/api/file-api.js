@@ -17,10 +17,14 @@ export const fileAPI = createApi({
   tagTypes: ['File'],
   endpoints: (build) => ({
     getFiles: build.query({
-      query: ({ dirId }) => ({
-        url: `/${dirId ? `?parent=${dirId}` : ''}`,
-        method: 'GET',
-      }),
+      query: ({ dirId, sort }) => {
+        let url = '/'
+        if(dirId) url = `/?parent=${dirId}` 
+        if(sort) url = `/?sort=${sort}`
+        if(dirId && sort) url = `/?parent=${dirId}&sort=${sort}`
+        
+        return { url, method: 'GET' }
+      },
       providesTags: ['File'],
     }),
 
@@ -32,7 +36,6 @@ export const fileAPI = createApi({
           parent: dirId,
           type: 'dir',
         },
-        
       }),
       invalidatesTags: ['File'],
     }),

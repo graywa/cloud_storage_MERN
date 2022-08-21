@@ -16,6 +16,7 @@ import { addFile, showUploader } from '../../../store/reducers/uploadReducer'
 const Storage = () => {
   const [isOpen, setOpen] = useState(false)
   const [isShowDropArea, setShowDropArea] = useState(false)
+  const [sort, setSort] = useState('type')
   const dispatch = useDispatch()
   const { dirStack, currentDir } = useSelector((state) => state.files)
 
@@ -31,6 +32,10 @@ const Storage = () => {
 
   const [uploadFile] = uploadAPI.useUploadFileMutation()
   const [getFiles] = fileAPI.useLazyGetFilesQuery()
+
+  useEffect(() => {
+    getFiles({dirId: currentDir, sort})
+  }, [sort, currentDir])
 
   const backHandler = () => {
     const backDirId = dirStack.at(-1)
@@ -58,7 +63,7 @@ const Storage = () => {
       })
     )
 
-    getFiles({ dirId: currentDir })
+    getFiles({ dirId: currentDir, sort })
   }
 
   const dragEnterHandler = (e) => {
@@ -105,6 +110,11 @@ const Storage = () => {
             multiple={true}
           />
         </label>
+        <select className='select' value={sort} onChange={e => setSort(e.target.value)} >
+          <option value="type">By type</option>
+          <option value="name">By name</option>
+          <option value="size">By size</option>
+        </select>
       </div>
 
       <div className='storage__content'>
@@ -128,7 +138,7 @@ const Storage = () => {
             onDragOver={dragOverHandler}
             onDragLeave={dragLeaveHandler}
           >
-            <FileList />
+            <FileList sort={sort} />
           </div>
         )}
       </div>

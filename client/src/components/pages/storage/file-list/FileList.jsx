@@ -4,14 +4,14 @@ import File from './file/File'
 import './FileList.scss'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
-const FileList = () => {
+const FileList = ({sort}) => {
   const { currentDir } = useSelector((state) => state.files)
   const {
     data = [],
     isLoading,
     error,
   } = fileAPI.useGetFilesQuery({
-    dirId: currentDir,
+    dirId: currentDir, sort
   })
 
   if (isLoading) return <h3>Loading...</h3>
