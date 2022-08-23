@@ -12,15 +12,17 @@ import upload from '../../assets/upload.png'
 import Uploader from './uploader/Uploader'
 import { uploadAPI } from '../../../api/upload-api'
 import { addFile, showUploader } from '../../../store/reducers/uploadReducer'
+import { tags } from './constants/tags'
 
 const Storage = () => {
   const [isOpen, setOpen] = useState(false)
   const [isShowDropArea, setShowDropArea] = useState(false)
-  const [sort, setSort] = useState('type')
+  const [sort, setSort] = useState(tags.type)
+  
   const dispatch = useDispatch()
   const { dirStack, currentDir } = useSelector((state) => state.files)
 
-  const [createDir, { data, error }] = fileAPI.useCreateDirMutation()
+  const [createDir, { error }] = fileAPI.useCreateDirMutation()
 
   const createDirHandler = async (name, dirId) => {
     await createDir({
@@ -31,11 +33,7 @@ const Storage = () => {
   }
 
   const [uploadFile] = uploadAPI.useUploadFileMutation()
-  const [getFiles] = fileAPI.useLazyGetFilesQuery()
-
-  useEffect(() => {
-    getFiles({dirId: currentDir, sort})
-  }, [sort, currentDir])
+  const [getFiles, {isLoading}] = fileAPI.useLazyGetFilesQuery()
 
   const backHandler = () => {
     const backDirId = dirStack.at(-1)
@@ -109,12 +107,7 @@ const Storage = () => {
             onChange={(e) => uploadFileHandler([...e.target.files])}
             multiple={true}
           />
-        </label>
-        <select className='select' value={sort} onChange={e => setSort(e.target.value)} >
-          <option value="type">By type</option>
-          <option value="name">By name</option>
-          <option value="size">By size</option>
-        </select>
+        </label>        
       </div>
 
       <div className='storage__content'>
@@ -138,7 +131,7 @@ const Storage = () => {
             onDragOver={dragOverHandler}
             onDragLeave={dragLeaveHandler}
           >
-            <FileList sort={sort} />
+            <FileList sort={sort} setSort={setSort} />
           </div>
         )}
       </div>

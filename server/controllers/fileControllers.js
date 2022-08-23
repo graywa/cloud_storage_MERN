@@ -22,28 +22,27 @@ class FileController {
       await file.save()
       return res.json(file)
     } catch (e) {
-      
+      console.log(e)
+      return res.status(500).json({message: "Can't create folder"})
     }
   }
 
   async getFiles(req, res) {
     try {
-      const {sort} = req.query
+      const {sort, search, parent} = req.query
       let files
+
       switch (sort) {
-        case 'type':
-          files = await File.find({user: req.user.id, parent: req.query.parent}).sort({type:1})
-          break
-        case 'name':
-          files = await File.find({user: req.user.id, parent: req.query.parent}).sort({name:1})
-          break
-        case 'size':
-          files = await File.find({user: req.user.id, parent: req.query.parent}).sort({size:1})
-          break      
+        case sort:
+          files = await File.find({user: req.user.id, parent}).sort({[sort]:1})
+          break        
         default:
-          files = await File.find({user: req.user.id, parent: req.query.parent})
+          files = await File.find({user: req.user.id, parent})
           break;
-      }       
+      }  
+
+      files = files.filter(file => file.name.includes(search))
+
       return res.json(files)
     } catch (e) {
       console.log(e)

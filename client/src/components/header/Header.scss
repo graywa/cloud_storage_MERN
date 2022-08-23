@@ -28,6 +28,17 @@
   }
 }
 
+.search {
+  padding: 5px 15px;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid rgb(199, 199, 199);
+
+  &:focus {
+    border-bottom: 1px solid rgb(78, 78, 78);
+  }
+}
+
 .account {
   display: flex;
   gap: 8px;

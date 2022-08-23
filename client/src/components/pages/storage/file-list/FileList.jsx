@@ -3,27 +3,63 @@ import { fileAPI } from '../../../../api/file-api'
 import File from './file/File'
 import './FileList.scss'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
+import { useEffect, useState } from 'react'
+import cn from 'classnames'
+import { tags } from '../constants/tags'
+import Loader from '../../../loader/Loader'
+import { useDebaunce } from '../../../../hooks/useDebaunce'
 
-const FileList = ({sort}) => {
-  const { currentDir } = useSelector((state) => state.files)
-  const {
-    data = [],
-    isLoading,
-    error,
-  } = fileAPI.useGetFilesQuery({
-    dirId: currentDir, sort
-  })
+const FileList = ({ sort, setSort }) => {
+  const { currentDir, search } = useSelector((state) => state.files)
+  const [getFiles, { data = [], isLoading, error }] =
+    fileAPI.useLazyGetFilesQuery()
 
-  if (isLoading) return <h3>Loading...</h3>
+  const getFilesDebaunced = useDebaunce(getFiles, 500)
+  
+  useEffect(() => {
+    getFilesDebaunced({ dirId: currentDir, sort, search })
+  }, [search])
+
+  useEffect(() => {
+    getFiles({ dirId: currentDir, sort, search })
+  }, [currentDir, sort])
+
+  if (error) console.log(error)
 
   return (
     <div className='file-list'>
       <div className='file-list__header'>
-        <div className='file-list__name'>Name</div>
-        <div className='file-list__date'>Date</div>
-        <div className='file-list__size'>Size</div>
+        <div
+          title='sort by type'
+          onClick={(e) => setSort(tags.type)}
+          className={cn('file-list__type', { active: sort === tags.type })}
+        >
+          Type
+        </div>
+        <div
+          title='sort by name'
+          onClick={(e) => setSort(tags.name)}
+          className={cn('file-list__name', { active: sort === tags.name })}
+        >
+          Name
+        </div>
+        <div
+          title='sort by date'
+          onClick={(e) => setSort(tags.date)}
+          className={cn('file-list__date', { active: sort === tags.date })}
+        >
+          Date
+        </div>
+        <div
+          title='sort by size'
+          onClick={(e) => setSort(tags.size)}
+          className={cn('file-list__size', { active: sort === tags.size })}
+        >
+          Size
+        </div>
       </div>
       <div className='file-list__content'>
+        {isLoading && <Loader />}
         <TransitionGroup>
           {data.map((file) => {
             return (
@@ -38,6 +74,7 @@ const FileList = ({sort}) => {
             )
           })}
         </TransitionGroup>
+        {!data.length && !isLoading && <div className='empty-block'>Files not found</div>}
       </div>
       <p>*drag and drop files to the file list</p>
     </div>

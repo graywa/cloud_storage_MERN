@@ -17,15 +17,17 @@ export const fileAPI = createApi({
   tagTypes: ['File'],
   endpoints: (build) => ({
     getFiles: build.query({
-      query: ({ dirId, sort }) => {
-        let url = '/'
-        if(dirId) url = `/?parent=${dirId}` 
-        if(sort) url = `/?sort=${sort}`
-        if(dirId && sort) url = `/?parent=${dirId}&sort=${sort}`
-        
-        return { url, method: 'GET' }
+      query: ({ dirId, sort, search = '' }) => {
+        const parent = dirId ? dirId : undefined
+        return { url: '/', method: 'GET', params: {parent, sort, search} }
       },
-      providesTags: ['File'],
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: 'File', id })),
+              { type: 'File', id: 'LIST' },
+            ]
+          : [{ type: 'File', id: 'LIST' }],
     }),
 
     createDir: build.mutation({
@@ -37,7 +39,7 @@ export const fileAPI = createApi({
           type: 'dir',
         },
       }),
-      invalidatesTags: ['File'],
+      invalidatesTags: [{ type: 'File', id: 'LIST' }],
     }),
 
     deleteFile: build.mutation({
@@ -50,33 +52,7 @@ export const fileAPI = createApi({
           },
         }
       },
-      invalidatesTags: ['File'],
-    }),
-
-    uploadFile: build.mutation({
-      query: (body) => {
-        return {
-          url: '/upload',
-          method: 'POST',
-          body,
-          onUploadProgress: (progressEvent) => {
-            const totalLength = progressEvent.lengthComputable
-              ? progressEvent.total
-              : progressEvent.target.getResponseHeader('content-length') ||
-                progressEvent.target.getResponseHeader(
-                  'x-decopressed-content-length'
-                )
-            console.log(totalLength)
-            if (totalLength) {
-              let progress = Math.round(
-                (progressEvent.loaded * 100) / totalLength
-              )
-              console.log(progress)
-            }
-          },
-        }
-      },
-      invalidatesTags: ['File'],
+      invalidatesTags: [{ type: 'File', id: 'LIST' }],
     }),
 
     downloadFile: build.query({
