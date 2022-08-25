@@ -1,6 +1,8 @@
 import './File.scss'
 import folder from '../../../../assets/folder.png'
 import file from '../../../../assets/file.png'
+import del from '../../../../assets/delete.png'
+import download from '../../../../assets/download.png'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   addDirToStack,
@@ -9,11 +11,12 @@ import {
 import { fileAPI } from '../../../../../api/file-api'
 import { formatSize } from '../../../../../utils/forman-size'
 
-const File = ({ _id, type, name, date, size }) => {
+const File = ({ view, _id, type, name, date, size }) => {
   const dispatch = useDispatch()
   const { currentDir } = useSelector((state) => state.files)
-  const [downloadFile, {error: downloadError}] = fileAPI.useLazyDownloadFileQuery()
-  const [deleteFile, {error: deleteError}] = fileAPI.useDeleteFileMutation()
+  const [downloadFile, { error: downloadError }] =
+    fileAPI.useLazyDownloadFileQuery()
+  const [deleteFile, { error: deleteError }] = fileAPI.useDeleteFileMutation()
 
   const openDirHandler = () => {
     if (type !== 'dir') return
@@ -35,28 +38,59 @@ const File = ({ _id, type, name, date, size }) => {
 
   const deleteHandler = async (e) => {
     e.stopPropagation()
-    await deleteFile({id: _id}).unwrap()
+    await deleteFile({ id: _id }).unwrap()
   }
 
-  if(downloadError ) console.log(downloadError.data.message)
-  if(deleteError) console.log(deleteError.data.message)
+  if (downloadError) console.log(downloadError.data.message)
+  if (deleteError) console.log(deleteError.data.message)
 
-  return (
-    <div className='file' onClick={openDirHandler}>
-      <img width={26} src={type === 'dir' ? folder : file} alt='icon' />
-      <div className='file__name'>{name}</div>
-      <div className='file__date'>{date?.slice(0, 10)}</div>
-      <div className='file__size'>{formatSize(size)}</div>
-      {type !== 'dir' && (
-        <button className='download' onClick={downloadHandler}>
-          download
+  if (view === 'list') {
+    return (
+      <div className='file' onClick={openDirHandler}>
+        <img width={26} src={type === 'dir' ? folder : file} alt='icon' />
+        <div className='file__name'>{name}</div>
+        <div className='file__date'>{date?.slice(0, 10)}</div>
+        <div className='file__size'>{formatSize(size)}</div>
+        {type !== 'dir' && (
+          <button className='download' onClick={downloadHandler}>
+            download
+          </button>
+        )}
+        <button className='delete' onClick={deleteHandler}>
+          delete
         </button>
-      )}
-      <button className='delete' onClick={deleteHandler}>
-        delete
-      </button>
-    </div>
-  )
+      </div>
+    )
+  }
+
+  if (view === 'grid') {
+    return (
+      <div className='file-grid' onClick={openDirHandler}>
+        <img width={60} src={type === 'dir' ? folder : file} alt='icon' />
+        <div className='file__name'>{name}</div>
+        <div className='btns'>
+          {type !== 'dir' && (
+            <img
+              width={32}
+              src={download}
+              className='download'
+              title='download'
+              onClick={downloadHandler}
+              alt='download'
+            />
+          )}
+          <img
+              width={32}
+              src={del}
+              className='delete'
+              title='delete'
+              onClick={deleteHandler}
+              alt='delete'
+            />          
+        </div>
+      </div>
+    )
+  }
 }
 
 export default File

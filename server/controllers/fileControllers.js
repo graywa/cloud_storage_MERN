@@ -31,10 +31,11 @@ class FileController {
     try {
       const {sort, search, parent} = req.query
       let files
+      
 
       switch (sort) {
         case sort:
-          files = await File.find({user: req.user.id, parent}).sort({[sort]:1})
+          files = await File.find({user: req.user.id, [parent ? 'parent' : null]: parent}).sort({[sort]:1})
           break        
         default:
           files = await File.find({user: req.user.id, parent})
@@ -103,7 +104,7 @@ class FileController {
   async downloadFile(req, res) {
     try {
       const file = await File.findOne({_id: req.query._id, user: req.user.id})
-      const path = config.get('filePath') + '\\' + req.user.id + '\\' + file.path 
+      const path = fileService.getPath(file) 
       if(fs.existsSync(path)) {
         return res.download(path, file.name)
       }

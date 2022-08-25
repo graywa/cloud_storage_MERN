@@ -7,6 +7,7 @@
   .content {
     display: flex;
     justify-content: space-between;
+    gap: 10px;
     align-items: center;
   }
 }
@@ -29,6 +30,8 @@
 }
 
 .search {
+  max-width: 320px;
+  width: 100%;
   padding: 5px 15px;
   border: none;
   outline: none;

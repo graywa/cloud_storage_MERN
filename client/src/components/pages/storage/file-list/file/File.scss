@@ -6,7 +6,7 @@
   align-items: center;
   gap: 6px;
   padding: 8px;
-  border-bottom:1px solid rgb(207, 207, 207);
+  border-bottom: 1px solid rgb(207, 207, 207);
   cursor: pointer;
 
   img {
@@ -20,13 +20,13 @@
   &__date {
     grid-column-start: 5;
     justify-self: center;
-    font-size: 14px;    
-  }  
+    font-size: 14px;
+  }
 
   &__size {
     grid-column-start: 6;
     justify-self: center;
-    font-size: 14px;    
+    font-size: 14px;
   }
 
   &:hover &__date {
@@ -39,12 +39,46 @@
 
   button {
     @extend %blueButton;
-    display: none;  
-    padding: 5px 10px; 
+    display: none;
+    padding: 5px 10px;
     font-size: 14px;
   }
 
   &:hover button {
     display: block;
   }
+}
+
+.file-grid {
+  width: 120px;
+  height: 130px;
+  padding:20px 10px;
+  display: flex;
+  gap: 8px;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+
+  .btns {
+    display: flex;
+    gap: 8px;
+  }
+
+  .btns img {
+    display: none;
+    margin-top: -5px;
+
+    &:hover {
+        transform: scale(1.05);
+      }
+  }
+
+  &:hover {
+    background-color: rgb(245, 245, 245);
+
+    img {
+      display: block;      
+    }
+  }
+  
 }

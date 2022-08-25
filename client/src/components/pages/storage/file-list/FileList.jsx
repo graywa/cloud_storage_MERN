@@ -8,16 +8,17 @@ import cn from 'classnames'
 import { tags } from '../constants/tags'
 import Loader from '../../../loader/Loader'
 import { useDebaunce } from '../../../../hooks/useDebaunce'
+import arrowDown from '../../../assets/down.png'
 
-const FileList = ({ sort, setSort }) => {
+const FileList = ({ view, sort, setSort }) => {
   const { currentDir, search } = useSelector((state) => state.files)
-  const [getFiles, { data = [], isLoading, error }] =
+  const [getFiles, { data = [], isFetching, error }] =
     fileAPI.useLazyGetFilesQuery()
 
   const getFilesDebaunced = useDebaunce(getFiles, 500)
-  
+
   useEffect(() => {
-    getFilesDebaunced({ dirId: currentDir, sort, search })
+    getFilesDebaunced({ sort, search })
   }, [search])
 
   useEffect(() => {
@@ -28,54 +29,105 @@ const FileList = ({ sort, setSort }) => {
 
   return (
     <div className='file-list'>
-      <div className='file-list__header'>
-        <div
-          title='sort by type'
-          onClick={(e) => setSort(tags.type)}
-          className={cn('file-list__type', { active: sort === tags.type })}
-        >
-          Type
-        </div>
-        <div
-          title='sort by name'
-          onClick={(e) => setSort(tags.name)}
-          className={cn('file-list__name', { active: sort === tags.name })}
-        >
-          Name
-        </div>
-        <div
-          title='sort by date'
-          onClick={(e) => setSort(tags.date)}
-          className={cn('file-list__date', { active: sort === tags.date })}
-        >
-          Date
-        </div>
-        <div
-          title='sort by size'
-          onClick={(e) => setSort(tags.size)}
-          className={cn('file-list__size', { active: sort === tags.size })}
-        >
-          Size
-        </div>
-      </div>
-      <div className='file-list__content'>
-        {isLoading && <Loader />}
-        <TransitionGroup>
-          {data.map((file) => {
-            return (
-              <CSSTransition
-                key={file._id}
-                timeout={500}
-                classNames='file-anim'
-                exit={false}
-              >
-                <File {...file} />
-              </CSSTransition>
-            )
-          })}
-        </TransitionGroup>
-        {!data.length && !isLoading && <div className='empty-block'>Files not found</div>}
-      </div>
+      {view === 'list' && (
+        <>
+          <div className='file-list__header'>
+            <div
+              title='sort by type'
+              onClick={(e) => setSort(tags.type)}
+              className={cn('file-list__type', {
+                active: sort === tags.type,
+              })}
+            >
+              Type
+              {sort === tags.type && (
+                <img width={16} src={arrowDown} alt='arrowDown' />
+              )}
+            </div>
+            <div
+              title='sort by name'
+              onClick={(e) => setSort(tags.name)}
+              className={cn('file-list__name', {
+                active: sort === tags.name,
+              })}
+            >
+              Name
+              {sort === tags.name && (
+                <img width={16} src={arrowDown} alt='arrowDown' />
+              )}
+            </div>
+            <div
+              title='sort by date'
+              onClick={(e) => setSort(tags.date)}
+              className={cn('file-list__date', {
+                active: sort === tags.date,
+              })}
+            >
+              Date
+              {sort === tags.date && (
+                <img width={16} src={arrowDown} alt='arrowDown' />
+              )}
+            </div>
+            <div
+              title='sort by size'
+              onClick={(e) => setSort(tags.size)}
+              className={cn('file-list__size', {
+                active: sort === tags.size,
+              })}
+            >
+              Size
+              {sort === tags.size && (
+                <img width={16} src={arrowDown} alt='arrowDown' />
+              )}
+            </div>
+          </div>
+          <div className='file-list__content'>
+            {isFetching ? (
+              <Loader />
+            ) : (
+              <>
+                {data.length ? (
+                  data.map((file) => {
+                    return <File key={file._id} view={view} {...file} />
+                  })
+                ) : (
+                  <div className='empty-block'>Files not found</div>
+                )}
+              </>
+            )}
+          </div>
+        </>
+      )}
+
+      {view === 'grid' && (
+        <>
+          <div className='grid-header'>
+            Sort by:
+            <select onChange={(e) => setSort(e.target.value)}>
+              <option value='type'>type</option>
+              <option value='name'>name</option>
+              <option value='date'>date</option>
+              <option value='size'>size</option>
+            </select>
+          </div>
+          <div className='file-list__content_grid'>
+            {isFetching ? (
+              <Loader />
+            ) : (
+              <div>
+                {data.length ? (
+                  data.map((file) => {
+                    return <File key={file._id} view={view} {...file} />
+                  })
+                ) : (
+                  <div className='empty-block'>Files not found</div>
+                )}
+              </div>
+            )}
+          </div>
+        </>
+      )}
+
       <p>*drag and drop files to the file list</p>
     </div>
   )

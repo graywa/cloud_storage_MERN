@@ -3,15 +3,41 @@
   flex-direction: column;
   background-color: rgb(255, 255, 255);
   border: 1px solid rgb(161, 161, 161);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .25);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
   height: 100%;
 
-  &__content {     
-    overflow-y: auto;  
-    flex: 1;  
-    
+  &__content {
+    overflow-y: auto;
+    flex: 1;
+
     & .file:nth-child(2n) {
       background-color: rgb(245, 245, 245);
+    }
+
+    &_grid {
+      overflow-y: auto;
+      flex: 1;
+
+      & > div {
+        display: grid;        
+        grid-template-columns: repeat(auto-fill, minmax(100px, 120px));
+        justify-content: center;
+        gap: 15px;
+      }
+    }
+  }
+
+  .grid-header {
+    margin: 0 0 5px;
+    padding:8px 10px;
+    background-color: rgb(240, 240, 240);
+    border-bottom: 2px solid rgb(173, 173, 173);
+    text-align: right;
+
+    select {
+      margin-left: 5px;
+      padding:2px 4px;
+      cursor: pointer;
     }
   }
 
@@ -30,6 +56,9 @@
 
     & > div {
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 3px;
     }
   }
   &__type {
@@ -55,13 +84,13 @@
   p {
     padding: 10px 10px 5px;
     background-color: rgb(250, 250, 250);
-    color:rgb(95, 95, 95);
+    color: rgb(95, 95, 95);
     border-top: 2px solid rgb(90, 90, 90);
   }
 }
 
 .file-anim-enter-active {
-  animation: file-enter 500ms forwards
+  animation: file-enter 500ms forwards;
 }
 
 @keyframes file-enter {

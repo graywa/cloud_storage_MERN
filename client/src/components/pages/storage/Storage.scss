@@ -23,6 +23,22 @@
     }
   }
 
+  &__view {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: auto;
+
+    img {
+      padding: 5px;
+      cursor: pointer;      
+
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+  }
+
   &__content {
     height: 600px;
 

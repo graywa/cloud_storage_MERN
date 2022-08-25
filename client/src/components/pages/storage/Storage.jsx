@@ -13,12 +13,15 @@ import Uploader from './uploader/Uploader'
 import { uploadAPI } from '../../../api/upload-api'
 import { addFile, showUploader } from '../../../store/reducers/uploadReducer'
 import { tags } from './constants/tags'
+import list from '../../assets/list.svg'
+import grid from '../../assets/grid.svg'
 
 const Storage = () => {
   const [isOpen, setOpen] = useState(false)
   const [isShowDropArea, setShowDropArea] = useState(false)
   const [sort, setSort] = useState(tags.type)
-  
+  const [view, setView] = useState('list')
+
   const dispatch = useDispatch()
   const { dirStack, currentDir } = useSelector((state) => state.files)
 
@@ -33,7 +36,7 @@ const Storage = () => {
   }
 
   const [uploadFile] = uploadAPI.useUploadFileMutation()
-  const [getFiles, {isLoading}] = fileAPI.useLazyGetFilesQuery()
+  const [getFiles, { isLoading }] = fileAPI.useLazyGetFilesQuery()
 
   const backHandler = () => {
     const backDirId = dirStack.at(-1)
@@ -107,7 +110,21 @@ const Storage = () => {
             onChange={(e) => uploadFileHandler([...e.target.files])}
             multiple={true}
           />
-        </label>        
+        </label>
+        <div className='storage__view'>
+          <img
+            width={34}
+            src={list}
+            alt='list'
+            onClick={() => setView('list')}
+          />
+          <img
+            width={38}
+            src={grid}
+            alt='grid'
+            onClick={() => setView('grid')}
+          />
+        </div>
       </div>
 
       <div className='storage__content'>
@@ -131,7 +148,7 @@ const Storage = () => {
             onDragOver={dragOverHandler}
             onDragLeave={dragLeaveHandler}
           >
-            <FileList sort={sort} setSort={setSort} />
+            <FileList view={view} sort={sort} setSort={setSort} />
           </div>
         )}
       </div>
