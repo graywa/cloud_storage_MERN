@@ -2,5 +2,6 @@
   "serverPort": 5000,
   "dbUrl": "mongodb+srv://blgar:ProDiletant0808@cloud.tug3a8m.mongodb.net/?retryWrites=true&w=majority",
   "secretKey": "mern-disk-key",
-  "filePath": "E:\\React__Projects\\cloud_ctorage_mern\\server\\files"
+  "filePath": "E:\\React__Projects\\cloud_ctorage_mern\\server\\files",
+  "staticPath": "E:\\React__Projects\\cloud_ctorage_mern\\server\\static"
 }

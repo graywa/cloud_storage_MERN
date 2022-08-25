@@ -3,6 +3,7 @@ const User = require('../models/User')
 const File = require('../models/File')
 const config = require('config')
 const fs = require('fs')
+const uuid = require('uuid')
 
 class FileController {
   async createDir(req, res) {
@@ -30,15 +31,14 @@ class FileController {
   async getFiles(req, res) {
     try {
       const {sort, search, parent} = req.query
-      let files
-      
+      let files      
 
       switch (sort) {
         case sort:
-          files = await File.find({user: req.user.id, [parent ? 'parent' : null]: parent}).sort({[sort]:1})
+          files = await File.find({user: req.user.id, parent: parent}).sort({[sort]:1})
           break        
         default:
-          files = await File.find({user: req.user.id, parent})
+          files = await File.find({user: req.user.id, parent: parent})
           break;
       }  
 
@@ -55,6 +55,7 @@ class FileController {
     try {
       const file = req.files.file
       const parent = await File.findOne({user: req.user.id, _id: req.body.parent})
+      console.log('upload', req.files)
       const user = await User.findOne({_id: req.user.id})
 
       if(user.usedSpace + file.size > user.diskSpace) {
@@ -126,6 +127,37 @@ class FileController {
     } catch (e) {
       console.log(e)
       return res.status(400).json({message: 'Maybe folder is not empty'})
+    }
+  }
+
+  async uploadAvatar(req, res) {
+    try {
+      const avatar = req.files.file
+      const avatarName = uuid.v4() + '.jpg'
+      const avatarPath = config.get('staticPath') + '\\' + avatarName
+      avatar.mv(avatarPath)
+      const user = await User.findById(req.user.id)
+      user.avatar = avatarName
+      user.save()
+
+      return res.json(user)
+    } catch (e) {
+      console.log(e)
+      return res.status(400).json({message: 'Upload avatar error'})
+    }
+  }
+
+  async deleteAvatar(req, res) {
+    try {
+      const user = await User.findById(req.user.id)
+      fs.unlinkSync(config.get('staticPath') + '\\' + user.avatar)
+      user.avatar = null
+      user.save()
+
+      return res.json(user)
+    } catch (e) {
+      console.log(e)
+      return res.status(400).json({message: 'Delete avatar error'})
     }
   }
 }
