@@ -1,0 +1,19 @@
+@import '../../styles/templates';
+
+.profile {
+  max-width: 1000px;
+  width: 100%;
+  flex: 1 1 auto;
+
+  input {
+    display: none;
+  }
+
+  button,
+  label {
+    @extend %blueButton;
+    width: 170px;
+    margin-bottom: 10px;    
+  }
+  
+}

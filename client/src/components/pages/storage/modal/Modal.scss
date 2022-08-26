@@ -24,10 +24,10 @@
     background-color: #fff;
     box-shadow: 5px 1px 10px 4px rgb(41 41 41 / 41%); 
 
-    img {
+    > img {
       position: absolute;
-      top: -14px;
-      right: -14px;
+      top: -18px;
+      right: -18px;
       transition: .2s linear;
       cursor: pointer;
 
@@ -38,6 +38,14 @@
 
     input {
       padding: 10px 15px;
+      background-color: rgb(250, 250, 250);
+      border: none;
+      border-bottom: 1px solid rgb(204, 204, 204);
+      outline: none;
+
+      &:focus {
+        border-bottom: 1px solid rgb(85, 85, 85);
+      }
     }
 
     button {

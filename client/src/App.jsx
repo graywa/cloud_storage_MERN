@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import { userAPI } from './api/user-api'
 import { useDispatch } from 'react-redux'
 import { setUser } from './store/reducers/userReducer'
-import Footer from './components/pages/footer/Footer'
+import Footer from './components/footer/Footer'
 
 function App() {
   const dispatch = useDispatch()
@@ -15,6 +15,7 @@ function App() {
     if (data) {
       const { token, user } = data
       dispatch(setUser({user}))
+      console.log(token)
       localStorage.setItem('token', token)
     }
   }, [data])

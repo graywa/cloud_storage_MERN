@@ -1,16 +1,21 @@
 import React from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { setSearchToStore } from '../../store/reducers/fileReducer'
 import { logout } from '../../store/reducers/userReducer'
 import storage from '../assets/storage.png'
 import './Header.scss'
+import { baseUrl } from '../../api/base-url'
+import avatarLogo from '../assets/avatar.png'
+import exit from '../assets/exit.png'
 
 const Header = () => {
-  const { isAuth } = useSelector((state) => state.user)
+  const { isAuth, currentUser: user } = useSelector((state) => state.user)
   const dispatch = useDispatch()
   const [search, setSearch] = useState('')
+
+  const avatar = user?.avatar ? baseUrl + user.avatar : avatarLogo 
 
   const logoutHandler = () => {
     localStorage.removeItem('token')
@@ -20,16 +25,16 @@ const Header = () => {
   const searchHandler = async (e) => {
     const searchValue = e.target.value
     setSearch(searchValue)
-    dispatch(setSearchToStore({search: searchValue}))
+    dispatch(setSearchToStore({ search: searchValue }))
   }
 
   return (
     <div className='header'>
       <div className='content container'>
-        <div className='logo'>
+        <NavLink className='logo' to='/' title='To main'>          
           <img width={40} src={storage} alt='storage' />
           <h3>Cloud Storage</h3>
-        </div>
+        </NavLink>
         {isAuth && (
           <input
             value={search}
@@ -39,7 +44,7 @@ const Header = () => {
             placeholder='search...'
           />
         )}
-        <div className='account'>
+        <div className='header__account'>
           {!isAuth && (
             <>
               <Link to='/registration'>Sign Up</Link>
@@ -48,9 +53,16 @@ const Header = () => {
           )}
 
           {isAuth && (
-            <button type='button' onClick={logoutHandler}>
-              Exit
-            </button>
+            <div className="header__user">
+              <span>{user?.email || 'anonymous'}</span>
+              <NavLink to='/profile'>
+                <img src={avatar} alt='avatar' />
+              </NavLink>
+              <button className='exit-btn' type='button' onClick={logoutHandler}>
+                <img width={24} src={exit} alt='exit' />
+                Exit
+              </button>
+            </div>
           )}
         </div>
       </div>

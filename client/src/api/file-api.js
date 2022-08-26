@@ -1,7 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react'
+import { baseUrl } from './base-url'
 
 const baseQuery = {
-  baseUrl: 'http://localhost:5000/api/file/',
+  baseUrl: baseUrl + 'api/file/',
   prepareHeaders: (headers) => {
     const token = localStorage.getItem('token')
     if (token) {
@@ -67,6 +68,21 @@ export const fileAPI = createApi({
         },
         cache: 'no-cache',
       }),
+    }),
+
+    uploadAvatar: build.mutation({
+      query: (body) => ({
+        body,
+        url: '/avatar',
+        method: 'POST',
+      })
+    }),
+
+    deleteAvatar: build.mutation({
+      query: () => ({        
+        url: '/avatar',
+        method: 'DELETE',
+      })
     }),
   }),
 })

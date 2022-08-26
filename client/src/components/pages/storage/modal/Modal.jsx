@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './Modal.scss'
-import close from './../../../assets/close.png'
+import close from './../../../assets/delete.png'
+import addFolder from './../../../assets/add-folder.png'
 import { useSelector } from 'react-redux'
 
 const Modal = ({ setOpen, createDirHandler }) => {
@@ -17,12 +18,13 @@ const Modal = ({ setOpen, createDirHandler }) => {
           onChange={e => setValue(e.target.value)}
         />        
         <img
-          width={34}
+          width={42}
           src={close}
           alt='close'
           onClick={() => setOpen(false)}
         />
         <button className='create' onClick={() => createDirHandler(value, currDir)}>
+          <img width={24} src={addFolder} alt="add-folder" />
           Create folder
         </button>
       </div>

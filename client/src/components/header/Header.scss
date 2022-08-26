@@ -10,6 +10,51 @@
     gap: 10px;
     align-items: center;
   }
+
+  &__account {
+    display: flex;
+    gap: 8px;
+
+    button,
+    > a {
+      @extend %blueButton;
+    }
+  }
+
+  &__user {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+
+    a {
+      img {
+        width: 42px;
+        height: 42px;
+        object-fit: cover;
+        border-radius: 50%;
+        box-shadow: 0 0 3px 1px #9191919c;
+        transition: 0.2s linear;
+
+        &:hover {
+          box-shadow: 0 0 4px 1px #919191;
+        }
+      }
+    }
+
+    a {
+      margin-left: -26px;
+    }
+
+    span {
+      background-color: rgb(252, 252, 252);
+      padding: 5px 20px 5px 10px;
+      font-size: 16px;
+    }
+
+    .exit-btn {
+      padding: 5px 15px;
+    }
+  }
 }
 
 .container {
@@ -32,22 +77,13 @@
 .search {
   max-width: 320px;
   width: 100%;
-  padding: 5px 15px;
+  padding: 8px 16px;
   border: none;
   outline: none;
   border-bottom: 1px solid rgb(199, 199, 199);
+  font-size: 18px;
 
   &:focus {
     border-bottom: 1px solid rgb(78, 78, 78);
-  }
-}
-
-.account {
-  display: flex;
-  gap: 8px;
-
-  a,
-  button {
-    @extend %blueButton
   }
 }

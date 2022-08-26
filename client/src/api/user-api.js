@@ -1,7 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react'
+import { baseUrl } from './base-url'
 
 const baseQuery = {
-  baseUrl: 'http://localhost:5000/api/auth',
+  baseUrl: baseUrl + 'api/auth',
   prepareHeaders: (headers) => {
     const token = localStorage.getItem('token')
     if (token) {
@@ -40,6 +41,6 @@ export const userAPI = createApi({
         url: '/auth',
         method: 'GET',
       })
-    }),
+    }),  
   })
 })

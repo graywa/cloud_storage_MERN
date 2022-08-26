@@ -18,12 +18,18 @@ const FileList = ({ view, sort, setSort }) => {
   const getFilesDebaunced = useDebaunce(getFiles, 500)
 
   useEffect(() => {
-    getFilesDebaunced({ sort, search })
+    if(search) {
+      getFilesDebaunced({ sort, search })
+    }
   }, [search])
 
   useEffect(() => {
-    getFiles({ dirId: currentDir, sort, search })
-  }, [currentDir, sort])
+    if(!search) {
+      getFiles({ dirId: currentDir, sort, search })
+    } else {
+      getFiles({ dirId: currentDir, sort, search })
+    }
+  }, [currentDir, sort, search])
 
   if (error) console.log(error)
 

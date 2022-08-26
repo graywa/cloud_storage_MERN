@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux'
+import Profile from './pages/profile/Profile'
 import Login from './pages/registration/Login'
 import Registration from './pages/registration/Registration'
 import Storage from './pages/storage/Storage'
@@ -20,6 +21,7 @@ const Router = () => {
       {isAuth && (
         <Routes>
           <Route path='/' element={<Storage />} />
+          <Route path='/profile' element={<Profile />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       )}

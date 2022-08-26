@@ -8,13 +8,16 @@ import {
 import FileList from './file-list/FileList'
 import Modal from './modal/Modal'
 import './Storage.scss'
-import upload from '../../assets/upload.png'
 import Uploader from './uploader/Uploader'
 import { uploadAPI } from '../../../api/upload-api'
 import { addFile, showUploader } from '../../../store/reducers/uploadReducer'
 import { tags } from './constants/tags'
 import list from '../../assets/list.svg'
 import grid from '../../assets/grid.svg'
+import back from '../../assets/back.png'
+import addFolder from '../../assets/add-folder.png'
+import upload from '../../assets/upload-white.png'
+import uploadCloud from '../../assets/upload.png'
 
 const Storage = () => {
   const [isOpen, setOpen] = useState(false)
@@ -23,7 +26,7 @@ const Storage = () => {
   const [view, setView] = useState('list')
 
   const dispatch = useDispatch()
-  const { dirStack, currentDir } = useSelector((state) => state.files)
+  const { dirStack, currentDir, search } = useSelector((state) => state.files)
 
   const [createDir, { error }] = fileAPI.useCreateDirMutation()
 
@@ -64,7 +67,7 @@ const Storage = () => {
       })
     )
 
-    getFiles({ dirId: currentDir, sort })
+    getFiles({ dirId: currentDir, sort, search })
   }
 
   const dragEnterHandler = (e) => {
@@ -97,12 +100,15 @@ const Storage = () => {
     <div className='storage container'>
       <div className='storage__btns'>
         <button className='back' onClick={backHandler}>
+          <img width={24} src={back} alt="back" />
           Back
         </button>
         <button className='create' onClick={() => setOpen(true)}>
-          Create folder
+        <img width={24} src={addFolder} alt="add-folder" />
+          Add folder
         </button>
         <label htmlFor='upload-file'>
+        <img width={24} src={upload} alt="upload" />
           Upload file
           <input
             type='file'
@@ -116,12 +122,14 @@ const Storage = () => {
             width={34}
             src={list}
             alt='list'
+            title='list view'
             onClick={() => setView('list')}
           />
           <img
             width={38}
             src={grid}
             alt='grid'
+            title='grid view'
             onClick={() => setView('grid')}
           />
         </div>
@@ -137,7 +145,7 @@ const Storage = () => {
             onDrop={dropHandler}
           >
             <p>
-              <img width={50} src={upload} alt='upload' />
+              <img width={50} src={uploadCloud} alt='upload' />
               Drag and drop files here
             </p>
           </div>

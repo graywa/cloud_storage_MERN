@@ -1,6 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/dist/query/react'
 import axios from 'axios'
 import { updateFileProgress } from '../store/reducers/uploadReducer'
+import { baseUrl } from './base-url'
 
 const axiosBaseQuery = ({ baseUrl }) => {
   return async ({ method, formData, dispatch, fileToUpload }) => {
@@ -22,7 +23,6 @@ const axiosBaseQuery = ({ baseUrl }) => {
             updFileToUpload.progress = Math.round(
               (progressEvent.loaded * 100) / totalLength
             )
-            console.log(updFileToUpload)
             dispatch(updateFileProgress(updFileToUpload))
           }
         },
@@ -43,7 +43,7 @@ const axiosBaseQuery = ({ baseUrl }) => {
 export const uploadAPI = createApi({
   reducerPath: 'uploadAPI',
   baseQuery: axiosBaseQuery({
-    baseUrl: 'http://localhost:5000/api/file/upload',
+    baseUrl: baseUrl + 'api/file/upload',
   }),
   endpoints: (build) => ({
     uploadFile: build.mutation({
