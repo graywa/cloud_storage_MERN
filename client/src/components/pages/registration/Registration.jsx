@@ -1,52 +1,90 @@
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
+import { useDispatch } from 'react-redux'
 import { userAPI } from '../../../api/user-api'
+import { setUser } from '../../../store/reducers/userReducer'
+import Loader from '../../loader/Loader'
 import './Registration.scss'
 
 const Registration = () => {
+  const dispatch = useDispatch()
+
   const {
     register,
     handleSubmit,
     formState: { errors },
+    getValues,
   } = useForm()
 
-  const [registration, {data, isLoading, error} ] = userAPI.useRegistrationMutation()
+  const [registration, { data: regData, isLoading, error }] =
+    userAPI.useRegistrationMutation()
 
-  const onSubmit = async ({email, password}) => {
-    const res = await registration({email, password})
-    console.log(res)
+  const [login, { data: loginData }] = userAPI.useLoginMutation()
+
+  const onSubmit = ({ email, password, login }) => {
+    registration({ email, password, login }).unwrap()
   }
 
-  console.log(errors)
-  
+  useEffect(() => {
+    if (regData?.message === 'User was created') {
+      const email = getValues('email')
+      const password = getValues('password')
+      login({ email, password })
+    }
+  }, [regData])
+
+  useEffect(() => {
+    if (loginData) {
+      const { user, token } = loginData
+      localStorage.setItem('token', token)
+      dispatch(setUser({ user }))
+    }
+  }, [loginData])
+
+  if (error) console.log(error)
+
   return (
     <div className='registration container'>
-      <h3>Registration</h3>
-      <form onSubmit={handleSubmit(onSubmit)} autoComplete='off'>
-        <div>
-          <input
-          type='email'
-          placeholder='email'
-          {...register('email', { required: true })}
-        />
-        {errors.email && <span className='error'>Field is required</span>}
-        </div>
-        
-        <div>
-          <input
-          type='password'
-          placeholder='password'
-          {...register('password', { required: true })}
-        />
-        {errors.password && <span className='error'>Field is required</span>}
-        </div>
-        
-        <button type='submit' disabled={false}>
-          Registration
-        </button>
+      <div className='content'>
+        <h3>Registration</h3>
+        <form onSubmit={handleSubmit(onSubmit)} autoComplete='off'>
+          <label>
+            <input
+              type='text'
+              placeholder='login'
+              {...register('login', { required: true })}
+            />
+            {errors.login && <span className='error'>field is required</span>}
+          </label>
 
-        {isLoading && <h3>Loading...</h3>}
-        {error && <h3 className='error'>{error.data.message}</h3>}
-      </form>
+          <label>
+            <input
+              type='email'
+              placeholder='email'
+              {...register('email', { required: true })}
+            />
+            {errors.email && <span className='error'>field is required</span>}
+          </label>
+
+          <label>
+            <input
+              type='password'
+              placeholder='password'
+              {...register('password', { required: true })}
+            />
+            {errors.password && (
+              <span className='error'>field is required</span>
+            )}
+          </label>
+
+          <button type='submit' disabled={isLoading}>
+            Registration
+          </button>
+
+          {isLoading && <Loader />}
+          {error && <h3 className='error'>{error.data.message}</h3>}
+        </form>
+      </div>
     </div>
   )
 }

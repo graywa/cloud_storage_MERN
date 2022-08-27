@@ -54,7 +54,7 @@ const Header = () => {
 
           {isAuth && (
             <div className="header__user">
-              <span>{user?.email || 'anonymous'}</span>
+              <span>{user?.login || 'anonymous'}</span>
               <NavLink to='/profile'>
                 <img src={avatar} alt='avatar' />
               </NavLink>

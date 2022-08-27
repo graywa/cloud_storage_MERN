@@ -24,7 +24,7 @@ router.post(
       if (!errors.isEmpty()) {
         return res.status(400).json({ message: 'Incorrect request', errors })
       }
-      const { email, password } = req.body
+      const { email, password, login } = req.body
       const candidate = await User.findOne({ email })
       if (candidate) {
         return res
@@ -32,7 +32,7 @@ router.post(
           .json({ message: `User with email ${email} already exists` })
       }
       const hashPassword = await bcrypt.hash(password, 8)
-      const user = new User({ email, password: hashPassword })
+      const user = new User({ email, password: hashPassword, login })
       await user.save()
       await fileService.createDir(new File({user: user.id, name: ''}))
       return res.json({ message: 'User was created' })
@@ -57,11 +57,13 @@ router.post('/login', async (req, res) => {
     const token = jwt.sign({ id: user.id }, config.get('secretKey'), {
       expiresIn: '1h',
     })
+    console.log(user)
     return res.json({
       token,
       user: {
         id: user.id,
         email: user.email,
+        login: user.login,
         diskSpace: user.diskSpace,
         usedSpace: user.usedSpace,
         avatar: user.avatar,

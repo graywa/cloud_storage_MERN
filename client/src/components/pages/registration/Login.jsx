@@ -31,33 +31,37 @@ const Login = () => {
 
   return (
     <div className='registration container'>
-      <h3>Login</h3>
-      <form onSubmit={handleSubmit(onSubmit)} autoComplete='off'>
-        <div>
-          <input
-            type='email'
-            placeholder='email'
-            {...register('email', { required: true })}
-          />
-          {errors.email && <span className='error'>Field is required</span>}
-        </div>
+      <div className='content'>
+        <h3>Login</h3>
+        <form onSubmit={handleSubmit(onSubmit)} autoComplete='off'>
+          <label>
+            <input
+              type='email'
+              placeholder='email'
+              {...register('email', { required: true })}
+            />
+            {errors.email && <span className='error'>field is required</span>}
+          </label>
 
-        <div>
-          <input
-            type='password'
-            placeholder='password'
-            {...register('password', { required: true })}
-          />
-          {errors.password && <span className='error'>Field is required</span>}
-        </div>
+          <label>
+            <input
+              type='password'
+              placeholder='password'
+              {...register('password', { required: true })}
+            />
+            {errors.password && (
+              <span className='error'>field is required</span>
+            )}
+          </label>
 
-        <button type='submit' disabled={false}>
-          Login
-        </button>
+          <button type='submit' disabled={isLoading}>
+            Login
+          </button>
 
-        {isLoading && <Loader />}
-        {error && <h3 className='error'>{error.data.message}</h3>}
-      </form>
+          {isLoading && <Loader />}
+          {error && <h3 className='error'>{error.data?.message}</h3>}
+        </form>
+      </div>
     </div>
   )
 }

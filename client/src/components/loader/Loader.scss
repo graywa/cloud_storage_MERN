@@ -1,16 +1,18 @@
 .loader {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   height: 100%;
+  min-height: 60px;
 }
 .loader-circle-81 {
   animation: loader-circle-81-spin 1s linear infinite;
   height: 10px;
   width: 10px;
   position: absolute;
-  top: 40%;
+  top: 50%;
   left: 50%;
   margin: -5px;
 }

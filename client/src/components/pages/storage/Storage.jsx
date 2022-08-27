@@ -99,16 +99,18 @@ const Storage = () => {
   return (
     <div className='storage container'>
       <div className='storage__btns'>
-        <button className='back' onClick={backHandler}>
-          <img width={24} src={back} alt="back" />
-          Back
-        </button>
+        {currentDir && (
+          <button className='back' onClick={backHandler}>
+            <img width={24} src={back} alt='back' />
+            Back
+          </button>
+        )}
         <button className='create' onClick={() => setOpen(true)}>
-        <img width={24} src={addFolder} alt="add-folder" />
+          <img width={24} src={addFolder} alt='add-folder' />
           Add folder
         </button>
         <label htmlFor='upload-file'>
-        <img width={24} src={upload} alt="upload" />
+          <img width={24} src={upload} alt='upload' />
           Upload file
           <input
             type='file'

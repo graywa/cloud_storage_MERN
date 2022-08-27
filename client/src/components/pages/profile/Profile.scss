@@ -5,6 +5,15 @@
   width: 100%;
   flex: 1 1 auto;
 
+  &__content {
+    @extend %content;
+  }
+
+  &__avatar {
+    width: 240px;
+    height: 240px;
+  }
+
   input {
     display: none;
   }
@@ -13,7 +22,11 @@
   label {
     @extend %blueButton;
     width: 170px;
-    margin-bottom: 10px;    
   }
-  
+
+  label {
+    img {
+      object-fit: cover;
+    }
+  }  
 }
