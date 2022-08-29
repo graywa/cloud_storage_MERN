@@ -5,7 +5,7 @@
   grid-template-columns: 1fr 4fr repeat(4, 1fr);
   align-items: center;
   gap: 6px;
-  padding: 8px;
+  padding: 5px;
   border-bottom: 1px solid rgb(207, 207, 207);
   cursor: pointer;
 
@@ -37,14 +37,13 @@
     grid-column-start: 4;
   }
 
-  button {
-    @extend %blueButton;
-    display: none;
-    padding: 5px 10px;
-    font-size: 14px;
+  .download,
+  .delete {
+    display: none; 
   }
 
-  &:hover button {
+  &:hover .download,
+  &:hover .delete {
     display: block;
   }
 }

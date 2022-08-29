@@ -10,7 +10,11 @@ import Modal from './modal/Modal'
 import './Storage.scss'
 import Uploader from './uploader/Uploader'
 import { uploadAPI } from '../../../api/upload-api'
-import { addFile, showUploader } from '../../../store/reducers/uploadReducer'
+import {
+  addFile,
+  hideUploader,
+  showUploader,
+} from '../../../store/reducers/uploadReducer'
 import { tags } from './constants/tags'
 import list from '../../assets/list.svg'
 import grid from '../../assets/grid.svg'
@@ -18,6 +22,7 @@ import back from '../../assets/back.png'
 import addFolder from '../../assets/add-folder.png'
 import upload from '../../assets/upload-white.png'
 import uploadCloud from '../../assets/upload.png'
+import { useDebaunce } from '../../../hooks/useDebaunce'
 
 const Storage = () => {
   const [isOpen, setOpen] = useState(false)
@@ -27,8 +32,10 @@ const Storage = () => {
 
   const dispatch = useDispatch()
   const { dirStack, currentDir, search } = useSelector((state) => state.files)
+  const { isLoading: isLoadUpload } = useSelector((state) => state.uploadFiles)
 
-  const [createDir, { error }] = fileAPI.useCreateDirMutation()
+  const [createDir, { error, isLoading: isLoadCreate }] =
+    fileAPI.useCreateDirMutation()
 
   const createDirHandler = async (name, dirId) => {
     await createDir({
@@ -39,22 +46,28 @@ const Storage = () => {
   }
 
   const [uploadFile] = uploadAPI.useUploadFileMutation()
-  const [getFiles, { isLoading }] = fileAPI.useLazyGetFilesQuery()
+  const [getFiles, { data: files = [], isFetching: isLoadGet }] =
+    fileAPI.useLazyGetFilesQuery()
+
+  const getFilesDebaunced = useDebaunce(getFiles, 500)
+
+  console.log('load', isLoadUpload)
 
   const backHandler = () => {
-    const backDirId = dirStack.at(-1)
-    if (backDirId === undefined) return
-    dispatch(setCurrDir({ currDir: backDirId }))
+    const prevDir = dirStack.at(-1)
+    console.log(prevDir)
+    if (prevDir.id === undefined) return
+    dispatch(setCurrDir({ currentDir: prevDir }))
     dispatch(delDirFromStack())
   }
 
   const uploadFileHandler = async (files) => {
     await Promise.all(
-      files.map((file, index) => {
+      files.map((file) => {
         const formData = new FormData()
         formData.append('file', file)
-        if (currentDir) {
-          formData.append('parent', currentDir)
+        if (currentDir.id) {
+          formData.append('parent', currentDir.id)
         }
         const fileToUpload = {
           id: Date.now(),
@@ -67,7 +80,7 @@ const Storage = () => {
       })
     )
 
-    getFiles({ dirId: currentDir, sort, search })
+    getFiles({ dirId: currentDir.id, sort, search })
   }
 
   const dragEnterHandler = (e) => {
@@ -90,16 +103,25 @@ const Storage = () => {
     e.stopPropagation()
     const files = [...e.dataTransfer.files]
     setShowDropArea(false)
-
     uploadFileHandler(files)
   }
 
   if (error) console.log(error.data.message)
 
+  const isLoading = isLoadCreate || isLoadGet || isLoadUpload
+
+  useEffect(() => {
+    if (search) {
+      getFilesDebaunced({ sort, search })
+    } else {
+      getFiles({ dirId: currentDir.id, sort, search })
+    }
+  }, [currentDir.id, sort, search])
+
   return (
     <div className='storage container'>
       <div className='storage__btns'>
-        {currentDir && (
+        {currentDir.id && (
           <button className='back' onClick={backHandler}>
             <img width={24} src={back} alt='back' />
             Back
@@ -138,7 +160,7 @@ const Storage = () => {
       </div>
 
       <div className='storage__content'>
-        {isShowDropArea ? (
+        {isShowDropArea && (
           <div
             className='drop-area'
             onDragEnter={dragEnterHandler}
@@ -151,16 +173,21 @@ const Storage = () => {
               Drag and drop files here
             </p>
           </div>
-        ) : (
-          <div
-            className='file-list-wrapper'
-            onDragEnter={dragEnterHandler}
-            onDragOver={dragOverHandler}
-            onDragLeave={dragLeaveHandler}
-          >
-            <FileList view={view} sort={sort} setSort={setSort} />
-          </div>
         )}
+
+        <div
+          className='file-list-wrapper'
+          onDragEnter={dragEnterHandler}
+          onDragOver={dragOverHandler}
+        >
+          <FileList
+            isLoading={isLoading}
+            files={files}
+            view={view}
+            sort={sort}
+            setSort={setSort}
+          />
+        </div>
       </div>
 
       {isOpen && (

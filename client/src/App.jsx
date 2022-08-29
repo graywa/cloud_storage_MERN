@@ -15,7 +15,6 @@ function App() {
     if (data) {
       const { token, user } = data
       dispatch(setUser({user}))
-      console.log(token)
       localStorage.setItem('token', token)
     }
   }, [data])

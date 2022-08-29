@@ -9,28 +9,12 @@ import Loader from '../../../loader/Loader'
 import { useDebaunce } from '../../../../hooks/useDebaunce'
 import arrowDown from '../../../assets/down.png'
 
-const FileList = ({ view, sort, setSort }) => {
-  const { currentDir, search } = useSelector((state) => state.files)
-  const [getFiles, { data = [], isFetching, error }] =
-    fileAPI.useLazyGetFilesQuery()
+const FileList = ({ isLoading, files, view, sort, setSort }) => {
+  //const { currentDir, search } = useSelector((state) => state.files)
+  // const [getFiles, { data = [], isFetching, error }] =
+  //   fileAPI.useLazyGetFilesQuery()
 
-  const getFilesDebaunced = useDebaunce(getFiles, 500)
-
-  useEffect(() => {
-    if(search) {
-      getFilesDebaunced({ sort, search })
-    }
-  }, [search])
-
-  useEffect(() => {
-    if(!search) {
-      getFiles({ dirId: currentDir, sort, search })
-    } else {
-      getFiles({ dirId: currentDir, sort, search })
-    }
-  }, [currentDir, sort, search])
-
-  if (error) console.log(error)
+  //if (error) console.log(error)
 
   return (
     <div className='file-list'>
@@ -87,12 +71,12 @@ const FileList = ({ view, sort, setSort }) => {
             </div>
           </div>
           <div className='file-list__content'>
-            {isFetching ? (
+            {isLoading ? (
               <Loader />
             ) : (
               <>
-                {data.length ? (
-                  data.map((file) => {
+                {files.length ? (
+                  files.map((file) => {
                     return <File key={file._id} view={view} {...file} />
                   })
                 ) : (
@@ -116,18 +100,18 @@ const FileList = ({ view, sort, setSort }) => {
             </select>
           </div>
           <div className='file-list__content_grid'>
-            {isFetching ? (
+            {isLoading ? (
               <Loader />
             ) : (
-              <div>
-                {data.length ? (
-                  data.map((file) => {
+              <>
+                {files.length ? (
+                  files.map((file) => {
                     return <File key={file._id} view={view} {...file} />
                   })
                 ) : (
                   <div className='empty-block'>Files not found</div>
                 )}
-              </div>
+              </>
             )}
           </div>
         </>

@@ -48,28 +48,31 @@ const Profile = () => {
   return (
     <div className='profile container'>
       <div className='profile__content'>
-        <div className='profile__login'>Login: {user?.login}</div>
-        <div className='profile__email'>Email: {user?.email}</div>
-        <div className='profile__storage'>Starage space: {user?.usedSpace}</div>
-
-        <div className='profile__avatar'>
+        <div className='profile__login'><b>Login</b>: {user?.login}</div>
+        <div className='profile__email'><b>Email</b>: {user?.email}</div>
+        <div className='profile__storage'><b>Starage space</b>: {user?.usedSpace}</div>
+        
+        <label htmlFor='avatar' title='choose avatar' >
+          <div className='profile__avatar'>
           {uploadLoading || deleteLoading ? (
             <Loader />
           ) : (
             <img width={240} src={avatar} alt='avatar' />
           )}
         </div>
-
-        <label htmlFor='avatar'>
           <input
             id='avatar'
             type='file'
             accept='image/*'
             onChange={uploadAvatarHandler}
           />
-          <img width={24} src={upload} alt='upload' />
-          Upload avatar
+          <span>
+            <img width={24} src={upload} alt='upload'  />
+            Upload avatar
+          </span>
+          
         </label>
+
         <button onClick={deleteAvatarHandler}>
           <img width={24} src={delBtn} alt='del' />
           Delete avatar

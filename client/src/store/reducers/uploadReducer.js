@@ -1,12 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const fileSlice = createSlice({
+const uploadSlice = createSlice({
   name: 'upload-files',
   initialState: {
     isShowUploader: false,
     files: [],
+    isLoading: false,
   },
   reducers: {
+    setIsLoading(state, {payload: {isLoading}}) {
+      state.isLoading = isLoading
+    },
     showUploader(state) {
       state.isShowUploader = true
     },
@@ -14,13 +18,12 @@ const fileSlice = createSlice({
       state.isShowUploader = false
     },
     addFile(state, { payload: { fileToUpload } }) {
-      state.files.push(fileToUpload)
+      state.files.unshift(fileToUpload)
     },
     removeFile(state, { payload: { id } }) {
       state.files = state.files.filter((file) => file.id !== id)
     },
     updateFileProgress(state, { payload: { id, progress } }) {
-      console.log(id, progress)
       const file = state.files.find((file) => file.id === id)
       file.progress = progress
     },
@@ -28,11 +31,12 @@ const fileSlice = createSlice({
 })
 
 export const {
+  setIsLoading,
   showUploader,
   hideUploader,
   removeFile,
   addFile,
   updateFileProgress,
-} = fileSlice.actions
+} = uploadSlice.actions
 
-export default fileSlice.reducer
+export default uploadSlice.reducer

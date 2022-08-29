@@ -6,22 +6,34 @@
   flex: 1 1 auto;
 
   &__content {
-    @extend %content;
+    @extend %content;    
   }
 
   &__avatar {
     width: 240px;
     height: 240px;
+
+    img {
+      object-fit: cover;
+    }
   }
 
   input {
     display: none;
   }
 
-  button,
   label {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  span,
+  button {
     @extend %blueButton;
-    width: 170px;
+    width: 170px;    
   }
 
   label {

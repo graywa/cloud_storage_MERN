@@ -5,21 +5,21 @@ const fileSlice = createSlice({
   initialState: {
     files: [],
     search: '',
-    currentDir: null,
+    currentDir: {id: null, name: '\\'},
     dirStack: [],
   },
   reducers: {
     setFiles(state, { payload: { files } }) {
       state.files = files
     },
-    setCurrDir(state, { payload: { currDir } }) {
-      state.currentDir = currDir
+    setCurrDir(state, { payload: { currentDir } }) {
+      state.currentDir = currentDir
     },
     addDir(state, { payload: { file } }) {
       state.files.push(file)
     },
-    addDirToStack(state, { payload: { dirId } }) {
-      state.dirStack.push(dirId)
+    addDirToStack(state, { payload: {prevDir}}) {
+      state.dirStack.push(prevDir)
     },
     delDirFromStack(state) {
       state.dirStack.pop()

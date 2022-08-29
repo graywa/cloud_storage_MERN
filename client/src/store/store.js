@@ -5,6 +5,7 @@ import files from '../store/reducers/fileReducer'
 import user from '../store/reducers/userReducer'
 import uploadFiles from '../store/reducers/uploadReducer'
 import { uploadAPI } from '../api/upload-api'
+import { unauthMiddleware } from './middleware/unauthMiddleware'
 
 export default configureStore({
   reducer: {
@@ -20,5 +21,6 @@ export default configureStore({
       fileAPI.middleware,
       userAPI.middleware,
       uploadAPI.middleware,
+      unauthMiddleware,
     ),
 })

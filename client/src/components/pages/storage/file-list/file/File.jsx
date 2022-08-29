@@ -13,15 +13,16 @@ import { formatSize } from '../../../../../utils/forman-size'
 
 const File = ({ view, _id, type, name, date, size }) => {
   const dispatch = useDispatch()
-  const { currentDir } = useSelector((state) => state.files)
+  const { currentDir: prevDir } = useSelector((state) => state.files)
   const [downloadFile, { error: downloadError }] =
     fileAPI.useLazyDownloadFileQuery()
   const [deleteFile, { error: deleteError }] = fileAPI.useDeleteFileMutation()
 
   const openDirHandler = () => {
     if (type !== 'dir') return
-    dispatch(addDirToStack({ dirId: currentDir }))
-    dispatch(setCurrDir({ currDir: _id }))
+    const currentDir = { id: _id, name }
+    dispatch(addDirToStack({ prevDir }))
+    dispatch(setCurrDir({ currentDir }))
   }
 
   const downloadHandler = async (e) => {
@@ -47,18 +48,33 @@ const File = ({ view, _id, type, name, date, size }) => {
   if (view === 'list') {
     return (
       <div className='file' onClick={openDirHandler}>
-        <img width={26} src={type === 'dir' ? folder : file} alt='icon' />
+        <img
+          className='file__icon'
+          width={32}
+          src={type === 'dir' ? folder : file}
+          alt='icon'
+        />
         <div className='file__name'>{name}</div>
         <div className='file__date'>{date?.slice(0, 10)}</div>
         <div className='file__size'>{formatSize(size)}</div>
         {type !== 'dir' && (
-          <button className='download' onClick={downloadHandler}>
-            download
-          </button>
+          <img
+            width={32}
+            src={download}
+            className='download'
+            title='download'
+            onClick={downloadHandler}
+            alt='download'
+          />
         )}
-        <button className='delete' onClick={deleteHandler}>
-          delete
-        </button>
+        <img
+          width={32}
+          src={del}
+          className='delete'
+          title='delete'
+          onClick={deleteHandler}
+          alt='delete'
+        />
       </div>
     )
   }
@@ -80,13 +96,13 @@ const File = ({ view, _id, type, name, date, size }) => {
             />
           )}
           <img
-              width={32}
-              src={del}
-              className='delete'
-              title='delete'
-              onClick={deleteHandler}
-              alt='delete'
-            />          
+            width={32}
+            src={del}
+            className='delete'
+            title='delete'
+            onClick={deleteHandler}
+            alt='delete'
+          />
         </div>
       </div>
     )

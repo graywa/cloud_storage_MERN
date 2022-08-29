@@ -1,11 +1,13 @@
 import { createApi } from '@reduxjs/toolkit/dist/query/react'
 import axios from 'axios'
-import { updateFileProgress } from '../store/reducers/uploadReducer'
+import { setIsLoading, updateFileProgress } from '../store/reducers/uploadReducer'
 import { baseUrl } from './base-url'
 
 const axiosBaseQuery = ({ baseUrl }) => {
   return async ({ method, formData, dispatch, fileToUpload }) => {
     try {
+      dispatch(setIsLoading({isLoading: true}))
+
       const response = await axios({
         url: baseUrl,
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
@@ -36,6 +38,8 @@ const axiosBaseQuery = ({ baseUrl }) => {
           data: e.response?.data || e.message,
         },
       }
+    } finally {
+      dispatch(setIsLoading({isLoading: false}))
     }
   }
 }

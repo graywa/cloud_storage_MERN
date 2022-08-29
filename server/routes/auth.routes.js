@@ -57,7 +57,7 @@ router.post('/login', async (req, res) => {
     const token = jwt.sign({ id: user.id }, config.get('secretKey'), {
       expiresIn: '1h',
     })
-    console.log(user)
+
     return res.json({
       token,
       user: {
@@ -86,6 +86,7 @@ router.get('/auth', authMiddleware, async (req, res) => {
       user: {
         id: user.id,
         email: user.email,
+        login: user.login,
         diskSpace: user.diskSpace,
         usedSpace: user.usedSpace,
         avatar: user.avatar,

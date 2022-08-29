@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 
 const Modal = ({ setOpen, createDirHandler }) => {
   const [value, setValue] = useState('')
-  const currDir = useSelector(state => state.files.currentDir)
+  const currDir = useSelector((state) => state.files.currentDir)
 
   return (
     <div className='modal' onClick={() => setOpen(false)}>
@@ -15,16 +15,22 @@ const Modal = ({ setOpen, createDirHandler }) => {
           type='text'
           placeholder='Folder name'
           value={value}
-          onChange={e => setValue(e.target.value)}
-        />        
+          onChange={(e) => setValue(e.target.value)}
+          onKeyPress={(e) =>
+            e.key === 'Enter' && createDirHandler(value, currDir.id)
+          }
+        />
         <img
           width={42}
           src={close}
           alt='close'
           onClick={() => setOpen(false)}
         />
-        <button className='create' onClick={() => createDirHandler(value, currDir)}>
-          <img width={24} src={addFolder} alt="add-folder" />
+        <button
+          className='create'
+          onClick={() => createDirHandler(value, currDir.id)}
+        >
+          <img width={24} src={addFolder} alt='add-folder' />
           Create folder
         </button>
       </div>
