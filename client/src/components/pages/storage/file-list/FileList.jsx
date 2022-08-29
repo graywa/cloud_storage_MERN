@@ -1,23 +1,48 @@
-import { useSelector } from 'react-redux'
-import { fileAPI } from '../../../../api/file-api'
 import File from './file/File'
 import './FileList.scss'
-import { useEffect, useState } from 'react'
 import cn from 'classnames'
 import { tags } from '../constants/tags'
 import Loader from '../../../loader/Loader'
-import { useDebaunce } from '../../../../hooks/useDebaunce'
 import arrowDown from '../../../assets/down.png'
+import { useDispatch } from 'react-redux'
+import {
+  delDirsFromStack,
+  setCurrDir,
+} from '../../../../store/reducers/fileReducer'
 
-const FileList = ({ isLoading, files, view, sort, setSort }) => {
-  //const { currentDir, search } = useSelector((state) => state.files)
-  // const [getFiles, { data = [], isFetching, error }] =
-  //   fileAPI.useLazyGetFilesQuery()
+const FileList = ({
+  isLoading,
+  files,
+  view,
+  sort,
+  setSort,
+  dirStack,
+  currentDir,
+}) => {
+  const dispatch = useDispatch()
 
-  //if (error) console.log(error)
+  const setDirHandler = (dir) => {
+    dispatch(setCurrDir({ currentDir: dir }))
+    dispatch(delDirsFromStack({ id: dir.id }))
+  }
 
   return (
     <div className='file-list'>
+      <div className='file-list__path'>
+        <span>path: </span>
+        {dirStack.map((dir) => (
+          <span key={dir.id}>
+            <span
+              className='file-list__link'              
+              onClick={() => setDirHandler(dir)}
+            >
+              {dir.name}
+            </span>
+            <span> \ </span>
+          </span>
+        ))}
+        <span className='file-list__link'>{currentDir.name} \</span>
+      </div>
       {view === 'list' && (
         <>
           <div className='file-list__header'>
@@ -103,7 +128,7 @@ const FileList = ({ isLoading, files, view, sort, setSort }) => {
             {isLoading ? (
               <Loader />
             ) : (
-              <>
+              <div>
                 {files.length ? (
                   files.map((file) => {
                     return <File key={file._id} view={view} {...file} />
@@ -111,7 +136,7 @@ const FileList = ({ isLoading, files, view, sort, setSort }) => {
                 ) : (
                   <div className='empty-block'>Files not found</div>
                 )}
-              </>
+              </div>
             )}
           </div>
         </>

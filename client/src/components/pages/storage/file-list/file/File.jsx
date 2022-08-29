@@ -14,9 +14,12 @@ import { formatSize } from '../../../../../utils/forman-size'
 const File = ({ view, _id, type, name, date, size }) => {
   const dispatch = useDispatch()
   const { currentDir: prevDir } = useSelector((state) => state.files)
-  const [downloadFile, { error: downloadError }] =
+  const [downloadFile, { error: downloadError, isFetching: isLoadDownload }] =
     fileAPI.useLazyDownloadFileQuery()
-  const [deleteFile, { error: deleteError }] = fileAPI.useDeleteFileMutation()
+  const [deleteFile, { error: deleteError, isLoading: isLoadDel }] =
+    fileAPI.useDeleteFileMutation()
+
+  const isLoading = isLoadDel || isLoadDownload
 
   const openDirHandler = () => {
     if (type !== 'dir') return
@@ -27,6 +30,8 @@ const File = ({ view, _id, type, name, date, size }) => {
 
   const downloadHandler = async (e) => {
     e.stopPropagation()
+    if (isLoading) return
+
     const response = await downloadFile({ _id })
     const downloadURL = response.data
     const link = document.createElement('a')
@@ -39,11 +44,15 @@ const File = ({ view, _id, type, name, date, size }) => {
 
   const deleteHandler = async (e) => {
     e.stopPropagation()
+    if (isLoading) return
+
     await deleteFile({ id: _id }).unwrap()
   }
 
   if (downloadError) console.log(downloadError.data.message)
   if (deleteError) console.log(deleteError.data.message)
+
+  if(isLoading) return <div>Loading...</div>
 
   if (view === 'list') {
     return (

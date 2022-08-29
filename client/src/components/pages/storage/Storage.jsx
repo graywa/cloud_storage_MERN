@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fileAPI } from '../../../api/file-api'
 import {
-  delDirFromStack,
+  delDirsFromStack,
   setCurrDir,
 } from '../../../store/reducers/fileReducer'
 import FileList from './file-list/FileList'
@@ -12,7 +12,6 @@ import Uploader from './uploader/Uploader'
 import { uploadAPI } from '../../../api/upload-api'
 import {
   addFile,
-  hideUploader,
   showUploader,
 } from '../../../store/reducers/uploadReducer'
 import { tags } from './constants/tags'
@@ -51,14 +50,11 @@ const Storage = () => {
 
   const getFilesDebaunced = useDebaunce(getFiles, 500)
 
-  console.log('load', isLoadUpload)
-
   const backHandler = () => {
     const prevDir = dirStack.at(-1)
-    console.log(prevDir)
     if (prevDir.id === undefined) return
     dispatch(setCurrDir({ currentDir: prevDir }))
-    dispatch(delDirFromStack())
+    dispatch(delDirsFromStack({id: prevDir.id}))
   }
 
   const uploadFileHandler = async (files) => {
@@ -186,6 +182,8 @@ const Storage = () => {
             view={view}
             sort={sort}
             setSort={setSort}
+            dirStack={dirStack}
+            currentDir={currentDir}
           />
         </div>
       </div>

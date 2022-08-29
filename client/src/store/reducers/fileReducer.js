@@ -5,7 +5,7 @@ const fileSlice = createSlice({
   initialState: {
     files: [],
     search: '',
-    currentDir: {id: null, name: '\\'},
+    currentDir: {id: null, name: 'root'},
     dirStack: [],
   },
   reducers: {
@@ -21,8 +21,11 @@ const fileSlice = createSlice({
     addDirToStack(state, { payload: {prevDir}}) {
       state.dirStack.push(prevDir)
     },
-    delDirFromStack(state) {
-      state.dirStack.pop()
+    delDirsFromStack(state, {payload: {id}}) {
+      console.log('id', id)
+      const lastIndex = state.dirStack.findIndex(dir => dir.id === id)
+      console.log('lastInx', lastIndex)
+      state.dirStack = state.dirStack.slice(0, lastIndex)
     },
     setSearchToStore(state, { payload: { search } }) {
       state.search = search
@@ -35,7 +38,7 @@ export const {
   setFiles,
   addDir,
   addDirToStack,
-  delDirFromStack,
+  delDirsFromStack,
   setSearchToStore,
 } = fileSlice.actions
 
