@@ -29,7 +29,7 @@ const FileList = ({
   return (
     <div className='file-list'>
       <div className='file-list__path'>
-        <span>path: </span>
+        <span className='file-list__path-title'>path: </span>
         {dirStack.map((dir) => (
           <span key={dir.id}>
             <span
@@ -41,7 +41,8 @@ const FileList = ({
             <span> \ </span>
           </span>
         ))}
-        <span className='file-list__link'>{currentDir.name} \</span>
+        <span className='file-list__link'>{currentDir.name}</span>
+        <span> \ </span>
       </div>
       {view === 'list' && (
         <>

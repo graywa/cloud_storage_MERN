@@ -5,14 +5,14 @@
   width: 100%;
   flex: 1 1 auto;
 
-  &__btns {
+  &__header {
     display: flex;
     gap: 20px;
     align-items: center;
     margin-bottom: 20px;
 
     button {
-      @extend %blueButton
+      @extend %blueButton;
     }
 
     input {
@@ -20,7 +20,45 @@
     }
 
     label {
-      @extend %blueButton
+      @extend %blueButton;
+    }
+  }
+
+  &__space {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-left: 10px;
+    font-size: 14px;
+    text-align: center;
+
+    .space {
+      position: relative;
+      height: 18px;
+      background-color: rgb(233, 233, 233);
+      box-shadow:inset 0px -1px 3px rgb(121 121 121 / 85%);
+      margin: 3px 0;
+
+      &__bar {
+        overflow: hidden;
+      }
+
+      &__bar-in {
+        width: 242px;
+        height: 18px;
+        background: linear-gradient(
+          90deg,
+          rgba(159, 202, 159, 1) 0%,
+          rgb(126, 228, 126) 100%
+        );
+      }
+
+      &__percent {
+        position: absolute;
+        left: 45%;
+        top: 0;
+        font-size: 14px;
+      }
     }
   }
 
@@ -32,7 +70,7 @@
 
     img {
       padding: 5px;
-      cursor: pointer;      
+      cursor: pointer;
 
       &:hover {
         transform: scale(1.05);

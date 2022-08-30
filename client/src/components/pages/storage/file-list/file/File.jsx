@@ -52,68 +52,78 @@ const File = ({ view, _id, type, name, date, size }) => {
   if (downloadError) console.log(downloadError.data.message)
   if (deleteError) console.log(deleteError.data.message)
 
-  if(isLoading) return <div>Loading...</div>
-
   if (view === 'list') {
     return (
-      <div className='file' onClick={openDirHandler}>
-        <img
-          className='file__icon'
-          width={32}
-          src={type === 'dir' ? folder : file}
-          alt='icon'
-        />
-        <div className='file__name'>{name}</div>
-        <div className='file__date'>{date?.slice(0, 10)}</div>
-        <div className='file__size'>{formatSize(size)}</div>
-        {type !== 'dir' && (
-          <img
-            width={32}
-            src={download}
-            className='download'
-            title='download'
-            onClick={downloadHandler}
-            alt='download'
-          />
+      <>
+        {isLoading ? (
+          <div className='file__delete'>Deleting...</div>
+        ) : (
+          <div className='file' onClick={openDirHandler}>
+            <img
+              className='file__icon'
+              width={32}
+              src={type === 'dir' ? folder : file}
+              alt='icon'
+            />
+            <div className='file__name'>{name}</div>
+            <div className='file__date'>{date?.slice(0, 10)}</div>
+            <div className='file__size'>{formatSize(size)}</div>
+            {type !== 'dir' && (
+              <img
+                width={32}
+                src={download}
+                className='download'
+                title='download'
+                onClick={downloadHandler}
+                alt='download'
+              />
+            )}
+            <img
+              width={32}
+              src={del}
+              className='delete'
+              title='delete'
+              onClick={deleteHandler}
+              alt='delete'
+            />
+          </div>
         )}
-        <img
-          width={32}
-          src={del}
-          className='delete'
-          title='delete'
-          onClick={deleteHandler}
-          alt='delete'
-        />
-      </div>
+      </>
     )
   }
 
   if (view === 'grid') {
     return (
-      <div className='file-grid' onClick={openDirHandler}>
-        <img width={60} src={type === 'dir' ? folder : file} alt='icon' />
-        <div className='file__name'>{name}</div>
-        <div className='btns'>
-          {type !== 'dir' && (
-            <img
-              width={32}
-              src={download}
-              className='download'
-              title='download'
-              onClick={downloadHandler}
-              alt='download'
-            />
-          )}
-          <img
-            width={32}
-            src={del}
-            className='delete'
-            title='delete'
-            onClick={deleteHandler}
-            alt='delete'
-          />
-        </div>
-      </div>
+      <>
+        {isLoading ? (
+          <div className='file__delete_grid'>Deleting...</div>
+        ) : (
+          <div className='file-grid' onClick={openDirHandler}>
+            <img width={60} src={type === 'dir' ? folder : file} alt='icon' />
+            <div className='file__name'>{name}</div>
+            <div className='btns'>
+              {type !== 'dir' && (
+                <img
+                  width={32}
+                  src={download}
+                  className='download'
+                  title='download'
+                  onClick={downloadHandler}
+                  alt='download'
+                />
+              )}
+              <img
+                width={32}
+                src={del}
+                className='delete'
+                title='delete'
+                onClick={deleteHandler}
+                alt='delete'
+              />
+            </div>
+          </div>
+        )}
+      </>
     )
   }
 }

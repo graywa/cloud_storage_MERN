@@ -10,10 +10,7 @@ import Modal from './modal/Modal'
 import './Storage.scss'
 import Uploader from './uploader/Uploader'
 import { uploadAPI } from '../../../api/upload-api'
-import {
-  addFile,
-  showUploader,
-} from '../../../store/reducers/uploadReducer'
+import { addFile, showUploader } from '../../../store/reducers/uploadReducer'
 import { tags } from './constants/tags'
 import list from '../../assets/list.svg'
 import grid from '../../assets/grid.svg'
@@ -22,6 +19,7 @@ import addFolder from '../../assets/add-folder.png'
 import upload from '../../assets/upload-white.png'
 import uploadCloud from '../../assets/upload.png'
 import { useDebaunce } from '../../../hooks/useDebaunce'
+import { formatSize } from '../../../utils/forman-size'
 
 const Storage = () => {
   const [isOpen, setOpen] = useState(false)
@@ -31,12 +29,14 @@ const Storage = () => {
 
   const dispatch = useDispatch()
   const { dirStack, currentDir, search } = useSelector((state) => state.files)
+  const { currentUser } = useSelector((state) => state.user)
   const { isLoading: isLoadUpload } = useSelector((state) => state.uploadFiles)
 
   const [createDir, { error, isLoading: isLoadCreate }] =
     fileAPI.useCreateDirMutation()
 
   const createDirHandler = async (name, dirId) => {
+    if (!name) return
     await createDir({
       name,
       dirId,
@@ -54,7 +54,7 @@ const Storage = () => {
     const prevDir = dirStack.at(-1)
     if (prevDir.id === undefined) return
     dispatch(setCurrDir({ currentDir: prevDir }))
-    dispatch(delDirsFromStack({id: prevDir.id}))
+    dispatch(delDirsFromStack({ id: prevDir.id }))
   }
 
   const uploadFileHandler = async (files) => {
@@ -106,6 +106,13 @@ const Storage = () => {
 
   const isLoading = isLoadCreate || isLoadGet || isLoadUpload
 
+  const usedSpace = formatSize(currentUser.usedSpace)
+  const usedSpacePercent = (
+    (currentUser.usedSpace / currentUser.diskSpace) *
+    100
+  ).toFixed(1)
+  const totalSpace = formatSize(currentUser.diskSpace)
+
   useEffect(() => {
     if (search) {
       getFilesDebaunced({ sort, search })
@@ -116,7 +123,7 @@ const Storage = () => {
 
   return (
     <div className='storage container'>
-      <div className='storage__btns'>
+      <div className='storage__header'>
         {currentDir.id && (
           <button className='back' onClick={backHandler}>
             <img width={24} src={back} alt='back' />
@@ -137,6 +144,20 @@ const Storage = () => {
             multiple={true}
           />
         </label>
+        <div className='storage__space'>
+          <span>
+            used <strong>{usedSpace}</strong> from <strong>{totalSpace}</strong>
+          </span>
+          <div className='space'>
+            <div
+              className='space__bar'
+              style={{ width: `${usedSpacePercent}%` }}
+            >
+              <div className='space__bar-in'></div>
+            </div>
+            <div className='space__percent'>{usedSpacePercent}%</div>
+          </div>
+        </div>
         <div className='storage__view'>
           <img
             width={34}

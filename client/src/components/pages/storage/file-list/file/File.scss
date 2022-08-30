@@ -9,6 +9,23 @@
   border-bottom: 1px solid rgb(207, 207, 207);
   cursor: pointer;
 
+  &__delete {
+    padding: 12px;
+    color: darkred;
+    text-align: center;
+    border-bottom: 1px solid rgb(207, 207, 207);
+
+    &_grid {
+      padding: 26px;
+      color: darkred;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  
+
   img {
     justify-self: center;
   }
