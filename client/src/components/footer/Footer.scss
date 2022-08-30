@@ -1,4 +1,22 @@
 .footer {
   height: 100px;
-  background-color: #dce9ea;
+  background-color: #e5ecec;
+
+  .content {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1000px;
+    width: 100%;
+    height: 100%;
+
+    a {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .year {
+      align-self: flex-end;
+    }
+  }
 }

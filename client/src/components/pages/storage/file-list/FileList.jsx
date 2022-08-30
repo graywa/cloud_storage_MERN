@@ -33,7 +33,7 @@ const FileList = ({
         {dirStack.map((dir) => (
           <span key={dir.id}>
             <span
-              className='file-list__link'              
+              className='file-list__link'
               onClick={() => setDirHandler(dir)}
             >
               {dir.name}
@@ -102,8 +102,10 @@ const FileList = ({
             ) : (
               <>
                 {files.length ? (
-                  files.map((file) => {
-                    return <File key={file._id} view={view} {...file} />
+                  files.map((file, ind) => {
+                    return (
+                      <File key={file._id} ind={ind} view={view} {...file} />
+                    )
                   })
                 ) : (
                   <div className='empty-block'>Files not found</div>
@@ -131,8 +133,10 @@ const FileList = ({
             ) : (
               <div>
                 {files.length ? (
-                  files.map((file) => {
-                    return <File key={file._id} view={view} {...file} />
+                  files.map((file, ind) => {
+                    return (
+                      <File key={file._id} ind={ind} view={view} {...file} />
+                    )
                   })
                 ) : (
                   <div className='empty-block'>Files not found</div>

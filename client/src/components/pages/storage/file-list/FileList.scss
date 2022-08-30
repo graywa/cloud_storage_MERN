@@ -1,7 +1,7 @@
 .file-list {
   display: flex;
   flex-direction: column;
-  background-color: rgb(240, 240, 240);
+  background-color: var(--bgc);
   border: 1px solid rgb(161, 161, 161);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
   height: 100%;
@@ -9,7 +9,7 @@
   &__path {
     margin: 0 5px;
     padding: 5px 10px;
-    background-color: rgb(240, 240, 240);
+    background-color: var(--bgc);
     border-bottom: 1px solid rgb(196, 196, 196);
   }
 
@@ -28,6 +28,7 @@
   &__content {
     background-color: rgb(255, 255, 255);
     overflow-y: auto;
+    overflow-x: hidden;
     flex: 1;
 
     & .file:nth-child(2n) {
@@ -50,7 +51,7 @@
 
   .grid-header {
     padding:8px 10px;
-    background-color: rgb(240, 240, 240);
+    background-color: var(--bgc);
     border-bottom: 2px solid rgb(173, 173, 173);
     text-align: right;
 
@@ -66,7 +67,7 @@
     grid-template-columns: 1fr 4fr repeat(4, 1fr);
     gap: 6px;
     padding: 10px 5px 6px;
-    background-color: rgb(240, 240, 240);
+    background-color: var(--bgc);
     border-bottom: 2px solid rgb(173, 173, 173);
 
     .active {

@@ -20,6 +20,7 @@ import upload from '../../assets/upload-white.png'
 import uploadCloud from '../../assets/upload.png'
 import { useDebaunce } from '../../../hooks/useDebaunce'
 import { formatSize } from '../../../utils/forman-size'
+import { motion, AnimatePresence } from 'framer-motion'
 
 const Storage = () => {
   const [isOpen, setOpen] = useState(false)
@@ -208,10 +209,18 @@ const Storage = () => {
           />
         </div>
       </div>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <Modal setOpen={setOpen} createDirHandler={createDirHandler} />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      {isOpen && (
-        <Modal setOpen={setOpen} createDirHandler={createDirHandler} />
-      )}
       <Uploader />
     </div>
   )

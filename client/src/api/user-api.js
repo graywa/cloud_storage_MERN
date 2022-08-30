@@ -27,6 +27,7 @@ export const userAPI = createApi({
         }
       })
     }),
+
     login: build.mutation({
       query: ({email, password}) => ({
         url: '/login',
@@ -37,6 +38,7 @@ export const userAPI = createApi({
         }
       })
     }),
+    
     auth: build.query({
       query: () => ({
         url: '/auth',

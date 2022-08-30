@@ -55,7 +55,7 @@ const Header = () => {
           {isAuth && (
             <div className="header__user">
               <span>{user?.login || 'anonymous'}</span>
-              <NavLink to='/profile'>
+              <NavLink to='/profile' title='To profile' >
                 <img src={avatar} alt='avatar' />
               </NavLink>
               <button className='exit-btn' type='button' onClick={logoutHandler}>

@@ -3,6 +3,7 @@ import './Modal.scss'
 import close from './../../../assets/delete.png'
 import addFolder from './../../../assets/add-folder.png'
 import { useSelector } from 'react-redux'
+import { motion, AnimatePresence } from 'framer-motion'
 
 const Modal = ({ setOpen, createDirHandler }) => {
   const [value, setValue] = useState('')
@@ -10,7 +11,13 @@ const Modal = ({ setOpen, createDirHandler }) => {
 
   return (
     <div className='modal' onClick={() => setOpen(false)}>
-      <div className='content' onClick={(e) => e.stopPropagation()}>
+      <motion.div
+        initial={{ opacity: 0, y: -300 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{opacity: 0, y: -300}}
+        className='content'
+        onClick={(e) => e.stopPropagation()}
+      >
         <input
           type='text'
           placeholder='Folder name'
@@ -33,7 +40,7 @@ const Modal = ({ setOpen, createDirHandler }) => {
           <img width={24} src={addFolder} alt='add-folder' />
           Create folder
         </button>
-      </div>
+      </motion.div>
     </div>
   )
 }

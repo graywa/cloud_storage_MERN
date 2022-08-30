@@ -10,8 +10,9 @@ import {
 } from '../../../../../store/reducers/fileReducer'
 import { fileAPI } from '../../../../../api/file-api'
 import { formatSize } from '../../../../../utils/forman-size'
+import { motion } from 'framer-motion'
 
-const File = ({ view, _id, type, name, date, size }) => {
+const File = ({ ind, view, _id, type, name, date, size }) => {
   const dispatch = useDispatch()
   const { currentDir: prevDir } = useSelector((state) => state.files)
   const [downloadFile, { error: downloadError, isFetching: isLoadDownload }] =
@@ -20,6 +21,31 @@ const File = ({ view, _id, type, name, date, size }) => {
     fileAPI.useDeleteFileMutation()
 
   const isLoading = isLoadDel || isLoadDownload
+
+  const listVariants = {
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: 0.05 * i,
+        duration: 0.2,
+      },
+    }),
+    hidden: { opacity: 0, y: -50 },
+  }
+
+  const gridVariants = {
+    visible: (i) => ({
+      opacity: 1,
+      x: 0,
+      transition: {
+        delay: 0.05 * i,
+        duration: 0.2,
+      },
+      //backgroundColor: '#ffffff'
+    }),
+    hidden: { opacity: 0, x: -50 },
+  }
 
   const openDirHandler = () => {
     if (type !== 'dir') return
@@ -58,7 +84,15 @@ const File = ({ view, _id, type, name, date, size }) => {
         {isLoading ? (
           <div className='file__delete'>Deleting...</div>
         ) : (
-          <div className='file' onClick={openDirHandler}>
+          <motion.div
+            variants={listVariants}
+            initial='hidden'
+            animate='visible'
+            custom={ind}
+            whileHover={{ scale: 1.005 }}
+            className='file'
+            onClick={openDirHandler}
+          >
             <img
               className='file__icon'
               width={32}
@@ -86,7 +120,7 @@ const File = ({ view, _id, type, name, date, size }) => {
               onClick={deleteHandler}
               alt='delete'
             />
-          </div>
+          </motion.div>
         )}
       </>
     )
@@ -98,7 +132,18 @@ const File = ({ view, _id, type, name, date, size }) => {
         {isLoading ? (
           <div className='file__delete_grid'>Deleting...</div>
         ) : (
-          <div className='file-grid' onClick={openDirHandler}>
+          <motion.div
+            variants={gridVariants}
+            initial='hidden'
+            animate='visible'
+            custom={ind}
+            whileHover={{ 
+              scale: 1.02, 
+              //backgroundColor: '#f5f5f5' 
+            }}
+            className='file-grid'
+            onClick={openDirHandler}
+          >
             <img width={60} src={type === 'dir' ? folder : file} alt='icon' />
             <div className='file__name'>{name}</div>
             <div className='btns'>
@@ -121,7 +166,7 @@ const File = ({ view, _id, type, name, date, size }) => {
                 alt='delete'
               />
             </div>
-          </div>
+          </motion.div>
         )}
       </>
     )
