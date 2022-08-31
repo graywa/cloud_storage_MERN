@@ -14,7 +14,7 @@ export default configureStore({
     uploadFiles,
     [userAPI.reducerPath]: userAPI.reducer,
     [fileAPI.reducerPath]: fileAPI.reducer,
-    [uploadAPI.reducerPath]: fileAPI.reducer,
+    [uploadAPI.reducerPath]: uploadAPI.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(

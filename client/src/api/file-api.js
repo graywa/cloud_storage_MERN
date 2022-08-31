@@ -20,7 +20,7 @@ export const fileAPI = createApi({
     getFiles: build.query({
       query: ({ dirId, sort, search = '' }) => {
         const parent = dirId ? dirId : undefined
-        return { url: '/', method: 'GET', params: {parent, sort, search} }
+        return { url: '/', method: 'GET', params: { parent, sort, search } }
       },
       providesTags: (result) =>
         result
@@ -34,7 +34,7 @@ export const fileAPI = createApi({
     createDir: build.mutation({
       query: ({ name, dirId }) => ({
         method: 'POST',
-        body: {
+        body: {         
           name,
           parent: dirId,
           type: 'dir',
@@ -44,15 +44,13 @@ export const fileAPI = createApi({
     }),
 
     deleteFile: build.mutation({
-      query: ({ id }) => {
-        return {
-          url: '/',
-          method: 'DELETE',
-          params: {
-            id,
-          },
-        }
-      },
+      query: ({ id }) => ({
+        url: '/',
+        method: 'DELETE',
+        params: {
+          id,
+        },
+      }),
       invalidatesTags: [{ type: 'File', id: 'LIST' }],
     }),
 
@@ -75,14 +73,14 @@ export const fileAPI = createApi({
         body,
         url: '/avatar',
         method: 'POST',
-      })
+      }),
     }),
 
     deleteAvatar: build.mutation({
-      query: () => ({        
+      query: () => ({
         url: '/avatar',
         method: 'DELETE',
-      })
+      }),
     }),
   }),
 })

@@ -11,14 +11,38 @@ import {
 import { fileAPI } from '../../../../../api/file-api'
 import { formatSize } from '../../../../../utils/forman-size'
 import { motion } from 'framer-motion'
+import { setUser } from '../../../../../store/reducers/userReducer'
+import { useEffect } from 'react'
+import toast from 'react-hot-toast'
 
 const File = ({ ind, view, _id, type, name, date, size }) => {
   const dispatch = useDispatch()
   const { currentDir: prevDir } = useSelector((state) => state.files)
+  const { currentUser } = useSelector((state) => state.user)
+
+  const [
+    deleteFile,
+    { error: deleteError, isLoading: isLoadDel },
+  ] = fileAPI.useDeleteFileMutation()
+
   const [downloadFile, { error: downloadError, isFetching: isLoadDownload }] =
     fileAPI.useLazyDownloadFileQuery()
-  const [deleteFile, { error: deleteError, isLoading: isLoadDel }] =
-    fileAPI.useDeleteFileMutation()
+
+  const error = downloadError || deleteError
+
+  const deleteHandler = async (e) => {
+    e.stopPropagation()
+    if (isLoading) return
+
+    const data = await deleteFile({ id: _id }).unwrap()
+
+    if (data) {
+      const updUser = { ...currentUser }
+      updUser.usedSpace -= size
+      toast.success('File was deleted successfully')
+      dispatch(setUser({ user: updUser }))
+    }
+  }
 
   const isLoading = isLoadDel || isLoadDownload
 
@@ -28,7 +52,7 @@ const File = ({ ind, view, _id, type, name, date, size }) => {
       y: 0,
       transition: {
         delay: 0.05 * i,
-        duration: 0.2,
+        duration: 0.1,
       },
     }),
     hidden: { opacity: 0, y: -50 },
@@ -40,7 +64,7 @@ const File = ({ ind, view, _id, type, name, date, size }) => {
       x: 0,
       transition: {
         delay: 0.05 * i,
-        duration: 0.2,
+        duration: 0.1,
       },
       //backgroundColor: '#ffffff'
     }),
@@ -68,20 +92,19 @@ const File = ({ ind, view, _id, type, name, date, size }) => {
     link.remove()
   }
 
-  const deleteHandler = async (e) => {
-    e.stopPropagation()
-    if (isLoading) return
-
-    await deleteFile({ id: _id }).unwrap()
-  }
-
-  if (downloadError) console.log(downloadError.data.message)
-  if (deleteError) console.log(deleteError.data.message)
+  useEffect(() => {
+    if (error?.data) {
+      toast.error(error.data.message)
+    }
+    if (error?.error) {
+      toast.error(error.error)
+    }
+  }, [error])
 
   if (view === 'list') {
     return (
       <>
-        {isLoading ? (
+        {isLoadDel ? (
           <div className='file__delete'>Deleting...</div>
         ) : (
           <motion.div
@@ -137,9 +160,9 @@ const File = ({ ind, view, _id, type, name, date, size }) => {
             initial='hidden'
             animate='visible'
             custom={ind}
-            whileHover={{ 
-              scale: 1.02, 
-              //backgroundColor: '#f5f5f5' 
+            whileHover={{
+              scale: 1.02,
+              //backgroundColor: '#f5f5f5'
             }}
             className='file-grid'
             onClick={openDirHandler}

@@ -6,6 +6,9 @@ import { userAPI } from './api/user-api'
 import { useDispatch } from 'react-redux'
 import { setUser } from './store/reducers/userReducer'
 import Footer from './components/footer/Footer'
+import Loader from './components/loader/Loader'
+import { Toaster } from 'react-hot-toast'
+
 
 function App() {
   const dispatch = useDispatch()
@@ -14,16 +17,24 @@ function App() {
   useEffect(() => {
     if (data) {
       const { token, user } = data
-      dispatch(setUser({user}))
+      dispatch(setUser({ user }))
       localStorage.setItem('token', token)
     }
   }, [data])
 
   return (
     <div className='app'>
-      <Header />
-      <Router />
-      <Footer />
+      <Toaster position="bottom-left" />
+
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <Header />
+          <Router />
+          <Footer />
+        </>
+      )}
     </div>
   )
 }

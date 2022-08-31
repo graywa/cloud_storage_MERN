@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <div className='footer'>
       <div className='content container'>
-        <div>Footer</div>
+        <div>Aspire to inspire</div>
         <div className='year'>2022</div>
         <div className='developer'>        
           <a

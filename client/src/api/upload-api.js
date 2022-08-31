@@ -35,7 +35,7 @@ const axiosBaseQuery = ({ baseUrl }) => {
       return {
         error: {
           status: e.response?.status,
-          data: e.response?.data || e.message,
+          data: e.response?.data || e,
         },
       }
     } finally {

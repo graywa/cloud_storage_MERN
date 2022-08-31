@@ -22,9 +22,7 @@ const fileSlice = createSlice({
       state.dirStack.push(prevDir)
     },
     delDirsFromStack(state, {payload: {id}}) {
-      console.log('id', id)
       const lastIndex = state.dirStack.findIndex(dir => dir.id === id)
-      console.log('lastInx', lastIndex)
       state.dirStack = state.dirStack.slice(0, lastIndex)
     },
     setSearchToStore(state, { payload: { search } }) {

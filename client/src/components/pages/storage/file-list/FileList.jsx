@@ -4,11 +4,13 @@ import cn from 'classnames'
 import { tags } from '../constants/tags'
 import Loader from '../../../loader/Loader'
 import arrowDown from '../../../assets/down.png'
+import back from '../../../assets/back-left.png'
 import { useDispatch } from 'react-redux'
 import {
   delDirsFromStack,
   setCurrDir,
 } from '../../../../store/reducers/fileReducer'
+
 
 const FileList = ({
   isLoading,
@@ -24,6 +26,13 @@ const FileList = ({
   const setDirHandler = (dir) => {
     dispatch(setCurrDir({ currentDir: dir }))
     dispatch(delDirsFromStack({ id: dir.id }))
+  }
+
+  const backHandler = () => {
+    const prevDir = dirStack.at(-1)
+    if (prevDir.id === undefined) return
+    dispatch(setCurrDir({ currentDir: prevDir }))
+    dispatch(delDirsFromStack({ id: prevDir.id }))
   }
 
   return (
@@ -101,6 +110,13 @@ const FileList = ({
               <Loader />
             ) : (
               <>
+                {currentDir.id && (
+                  <div className='back' onClick={backHandler}>
+                    <img width={24} src={back} alt='back' />
+                    <span>...</span>
+                  </div>
+                )}
+
                 {files.length ? (
                   files.map((file, ind) => {
                     return (
@@ -132,6 +148,13 @@ const FileList = ({
               <Loader />
             ) : (
               <div>
+                {currentDir.id && (
+                  <div className='back-grid' onClick={backHandler}>
+                    <img width={36} src={back} alt='back' />
+                    <span>...</span>
+                  </div>
+                )}
+
                 {files.length ? (
                   files.map((file, ind) => {
                     return (

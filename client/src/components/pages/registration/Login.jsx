@@ -1,10 +1,12 @@
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
 import { userAPI } from '../../../api/user-api'
 import { setUser } from '../../../store/reducers/userReducer'
 import Loader from '../../loader/Loader'
 import './Registration.scss'
+
 
 const Login = () => {
   const {
@@ -28,6 +30,15 @@ const Login = () => {
       dispatch(setUser({ user }))
     }
   }, [data])
+
+  useEffect(() => {
+    if (error?.data) {
+      toast.error(error.data.message)
+    }
+    if (error?.error) {
+      toast.error(error.error)
+    }
+  }, [error])
 
   return (
     <div className='registration container'>
@@ -59,7 +70,6 @@ const Login = () => {
           </button>
 
           {isLoading && <Loader />}
-          {error && <h3 className='error'>{error.data?.message}</h3>}
         </form>
       </div>
     </div>
