@@ -3,7 +3,7 @@ import github from '../assets/github.png'
 
 const Footer = () => {
   return (
-    <div className='footer'>
+    <footer className='footer'>
       <div className='content container'>
         <div>Aspire to inspire</div>
         <div className='year'>2022</div>
@@ -18,7 +18,7 @@ const Footer = () => {
           </a>
         </div>
       </div>
-    </div>
+    </footer>
   )
 }
 

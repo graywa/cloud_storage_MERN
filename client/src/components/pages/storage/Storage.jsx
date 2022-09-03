@@ -154,15 +154,15 @@ const Storage = () => {
   }, [error])
 
   return (
-    <div className='storage container'>
+    <main className='storage container'>
       <div className='storage__header'>
         <button className='create' onClick={() => setOpen(true)}>
           <img width={24} src={addFolder} alt='add-folder' />
-          Add folder
+          <span>Add folder</span>
         </button>
         <label htmlFor='upload-file'>
           <img width={24} src={upload} alt='upload' />
-          Upload file
+          <span>Upload file</span>
           <input
             type='file'
             id='upload-file'
@@ -247,7 +247,7 @@ const Storage = () => {
       </AnimatePresence>
 
       <Uploader />
-    </div>
+    </main>
   )
 }
 

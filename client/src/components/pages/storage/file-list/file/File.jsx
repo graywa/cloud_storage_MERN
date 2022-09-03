@@ -167,7 +167,7 @@ const File = ({ ind, view, _id, type, name, date, size }) => {
             className='file-grid'
             onClick={openDirHandler}
           >
-            <img width={60} src={type === 'dir' ? folder : file} alt='icon' />
+            <img className='file-grid__icon' width={60} src={type === 'dir' ? folder : file} alt='icon' />
             <div className='file__name'>{name}</div>
             <div className='btns'>
               {type !== 'dir' && (

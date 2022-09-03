@@ -6,8 +6,10 @@
   flex: 1 1 auto;
 
   &__header {
-    display: flex;
+    display: grid;
+    grid-template-columns: 130px 130px 1fr 100px;
     gap: 20px;
+    justify-items: start;
     align-items: center;
     margin-bottom: 20px;
 
@@ -21,6 +23,27 @@
 
     label {
       @extend %blueButton;
+    }
+
+    @media (max-width: 700px) {
+      grid-template-columns: 1fr 1fr 1fr;
+
+      .storage__space {
+        justify-self: center;
+        grid-column: 1 / 4;
+        grid-row: 1 / auto;
+      }      
+    }
+
+    @media (max-width: 500px) {
+      button,
+      label {
+        justify-self: center;
+        padding: 6px 20px;
+        span {
+          display: none;
+        }
+      }
     }
   }
 
@@ -36,7 +59,7 @@
       position: relative;
       height: 18px;
       background-color: rgb(233, 233, 233);
-      box-shadow:inset 0px -1px 3px rgb(121 121 121 / 85%);
+      box-shadow: inset 0px -1px 3px rgb(121 121 121 / 85%);
       margin: 3px 0;
 
       &__bar {
