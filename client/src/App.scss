@@ -39,7 +39,7 @@ img {
 :root {
   --main-color: rgb(85, 130, 214);
   --second-color: rgb(68, 113, 197);
-  --bgc: rgb(243, 243, 236);
+  --bgc: rgb(245, 245, 239);
 }
 
 .app {
@@ -48,4 +48,14 @@ img {
   gap: 20px;
   height: 100vh;
   background: linear-gradient(rgb(245, 244, 255), rgb(255, 255, 255)) no-repeat;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #e4e4e4;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #adadad;
 }

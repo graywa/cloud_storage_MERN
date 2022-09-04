@@ -11,7 +11,6 @@ import {
   setCurrDir,
 } from '../../../../store/reducers/fileReducer'
 
-
 const FileList = ({
   isLoading,
   files,

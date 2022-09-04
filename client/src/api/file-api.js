@@ -34,7 +34,7 @@ export const fileAPI = createApi({
     createDir: build.mutation({
       query: ({ name, dirId }) => ({
         method: 'POST',
-        body: {         
+        body: {
           name,
           parent: dirId,
           type: 'dir',

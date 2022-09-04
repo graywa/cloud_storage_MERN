@@ -112,7 +112,6 @@ const File = ({ ind, view, _id, type, name, date, size }) => {
             initial='hidden'
             animate='visible'
             custom={ind}
-            whileHover={{ scale: 1.005 }}
             className='file'
             onClick={openDirHandler}
           >
@@ -160,10 +159,6 @@ const File = ({ ind, view, _id, type, name, date, size }) => {
             initial='hidden'
             animate='visible'
             custom={ind}
-            whileHover={{
-              scale: 1.02,
-              //backgroundColor: '#f5f5f5'
-            }}
             className='file-grid'
             onClick={openDirHandler}
           >
