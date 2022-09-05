@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.css": "/cloud_storage_MERN/static/css/main.f046d5ea.css",
+    "main.js": "/cloud_storage_MERN/static/js/main.45ecf62b.js",
+    "static/media/close.png": "/cloud_storage_MERN/static/media/close.1c2963ee3467352a1681.png",
+    "static/media/avatar.png": "/cloud_storage_MERN/static/media/avatar.0d14c6999b4a5c8e86a7.png",
+    "static/media/storage.png": "/cloud_storage_MERN/static/media/storage.c7993467f1129a368ba5.png",
+    "static/media/github.png": "/cloud_storage_MERN/static/media/github.e8efa7f43ecd05b0a5e4.png",
+    "static/media/grid.svg": "/cloud_storage_MERN/static/media/grid.6eddc02546f383e61558af641c8253b9.svg",
+    "static/media/list.svg": "/cloud_storage_MERN/static/media/list.9298bc941bd5f8a89e1bcf7f1f9b6888.svg",
+    "index.html": "/cloud_storage_MERN/index.html",
+    "main.f046d5ea.css.map": "/cloud_storage_MERN/static/css/main.f046d5ea.css.map",
+    "main.45ecf62b.js.map": "/cloud_storage_MERN/static/js/main.45ecf62b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f046d5ea.css",
+    "static/js/main.45ecf62b.js"
+  ]
+}
