@@ -1,9 +1,9 @@
 const fs = require('fs')
 const File = require('../models/File')
 const config = require('config')
+const path = require('path')
 
 class FileService {
-
   createDir(req, file) {
     const filePath = this.getPath(req, file)
     return new Promise((res, rej) => {
@@ -30,7 +30,7 @@ class FileService {
   }
 
   getPath(req, file) {
-    return req.filePath + '\\' + file.user + '\\' + file.path
+    return path.normalize(`${req.filePath}/${file.user}/${file.path}`) 
   }
 } 
 

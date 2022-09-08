@@ -1,8 +1,9 @@
 const fileService = require('../services/fileService')
 const User = require('../models/User')
 const File = require('../models/File')
-const config = require('config')
+const path = require('path')
 const fs = require('fs')
+
 const uuid = require('uuid')
 
 class FileController {
@@ -15,7 +16,7 @@ class FileController {
         file.path = name
         await fileService.createDir(req, file)
       } else {
-        file.path = `${parentFile.path}\\${file.name}`
+        file.path = path.normalize(`${parentFile.path}/${file.name}`)
         await fileService.createDir(req, file)
         parentFile.childs.push(file._id)
         await parentFile.save()
@@ -33,15 +34,12 @@ class FileController {
       const { sort, search, parent } = req.query
       let files
 
-      switch (sort) {
-        case sort:
-          files = await File.find({ user: req.user.id, parent: parent }).sort({
-            [sort]: 1,
-          })
-          break
-        default:
-          files = await File.find({ user: req.user.id, parent: parent })
-          break
+      if (search) {
+        files = await File.find({ user: req.user.id }).sort({ [sort]: 1 })
+      } else {
+        files = await File.find({ user: req.user.id, parent }).sort({
+          [sort]: 1,
+        })
       }
 
       files = files.filter((file) => file.name.includes(search))
@@ -68,25 +66,25 @@ class FileController {
 
       user.usedSpace = user.usedSpace + file.size
 
-      let path
+      let serverPath
       if (parent) {
-        path = `${req.filePath}\\${user._id}\\${parent.path}\\${
-          file.name
-        }`
+        serverPath = path.normalize(
+          `${req.filePath}/${user._id}/${parent.path}/${file.name}`
+        )
       } else {
-        path = `${req.filePath}\\${user._id}\\${file.name}`
+        serverPath = path.normalize(`${req.filePath}/${user._id}/${file.name}`)
       }
 
-      if (fs.existsSync(path)) {
+      if (fs.existsSync(serverPath)) {
         return res.status(400).json({ message: 'Upload error' })
       }
 
-      file.mv(path)
+      file.mv(serverPath)
 
       const type = file.name.split('.').pop()
       let filePath = file.name
       if (parent) {
-        filePath = parent.path + '\\' + file.name
+        filePath = path.normalize(`${parent.path}/${file.name}`)
       }
       const dbFile = new File({
         name: file.name,
@@ -146,7 +144,7 @@ class FileController {
     try {
       const avatar = req.files.file
       const avatarName = uuid.v4() + '.jpg'
-      const avatarPath = config.get('staticPath') + '\\' + avatarName
+      const avatarPath = path.normalize(`${req.staticPath}/${avatarName}`)
       avatar.mv(avatarPath)
       const user = await User.findById(req.user.id)
       user.avatar = avatarName
@@ -162,7 +160,7 @@ class FileController {
   async deleteAvatar(req, res) {
     try {
       const user = await User.findById(req.user.id)
-      fs.unlinkSync(config.get('staticPath') + '\\' + user.avatar)
+      fs.unlinkSync(path.normalize(`${req.staticPath}/${user.avatar}`))
       user.avatar = null
       user.save()
 

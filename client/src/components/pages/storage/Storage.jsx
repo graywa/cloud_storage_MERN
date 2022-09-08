@@ -133,7 +133,6 @@ const Storage = () => {
       updUser.usedSpace += filesSize
       dispatch(setUser({ user: updUser }))
       setFilesSize(0)
-      console.log(filesSize)
       toast.success('Files were uploaded')
     }
   }, [filesSize])
